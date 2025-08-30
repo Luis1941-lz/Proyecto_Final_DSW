@@ -1,4 +1,4 @@
-﻿namespace Proyecto_DSW.Models
+﻿namespace Proyecto_DSW.Models.DTO
 {
     public class DetalleVentaRequest
     {
