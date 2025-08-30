@@ -1,0 +1,119 @@
+﻿@model Proyecto_DSW.Models.Pago
+
+@{
+    ViewData["Title"] = "Formulario de Pago";
+}
+
+<h1 class="text-center text-primary">Formulario de Pago</h1>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <h4 class="text-primary">Detalles del Pago</h4>
+            <hr />
+
+            <form asp-action="RealizarPago" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+
+                <input asp-for="id_pago" type="hidden" />
+                <input asp-for="id_usuario" type="hidden" />
+
+
+                <input asp-for="Suscripcion.id_plan" type="hidden" />
+                <input asp-for="Suscripcion.fecha_inicio" type="hidden" />
+                <input asp-for="Suscripcion.fecha_fin" type="hidden" />
+                <input asp-for="Suscripcion.estado" type="hidden" />
+                <input asp-for="Suscripcion.Plan.id_plan_suscripcion" type="hidden" />
+                <input asp-for="Suscripcion.Plan.precio" type="hidden" />
+                <input asp-for="Suscripcion.Plan.duracion_dias" type="hidden" />
+
+                <div class="form-group">
+                    <label class="control-label text-dark">Usuario</label>
+                    <input type="text" class="form-control"
+                           value="@Context.Session.GetString("usuario_nombre")" readonly />
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="id_metodo_pago" class="control-label text-dark">Método de Pago</label>
+                    <select asp-for="id_metodo_pago" class="form-control" asp-items="ViewBag.MetodosDePago" id="metodoPagoSelect">
+                        <option value="">Seleccione un método de pago</option>
+                    </select>
+                    <span asp-validation-for="id_metodo_pago" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="monto" class="control-label text-dark">Monto a Pagar</label>
+                    <input asp-for="monto" id="montoInput" class="form-control" type="number" step="0.01" min="0" readonly />
+                    <span asp-validation-for="monto" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="fecha_pago" class="control-label text-dark">Fecha de Pago</label>
+                    <input asp-for="fecha_pago" class="form-control" type="text" readonly value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" />
+                    <span asp-validation-for="fecha_pago" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group" >
+                    <label asp-for="estado" class="control-label text-dark">Estado</label>
+                    <input asp-for="estado" class="form-control" readonly value="Pendiente" />
+                    <span asp-validation-for="estado" class="text-danger"></span>
+                </div>
+
+
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Realizar Pago</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a asp-action="Index" class="btn btn-secondary">Volver a la Lista</a>
+</div>
+
+@section Scripts {
+    <script>
+        const precioBase = @ViewBag.Precio;
+        const montoInput = document.getElementById("montoInput");
+        const metodoPagoSelect = document.getElementById("metodoPagoSelect");
+
+        function actualizarMonto() {
+            let metodo = parseInt(metodoPagoSelect.value);
+            let nuevoMonto = precioBase;
+
+            switch (metodo) {
+                case 1: 
+                    nuevoMonto = precioBase * 1.05;
+                    break;
+                case 2: 
+                    nuevoMonto = precioBase;
+                    break;
+                case 3: 
+                    nuevoMonto = precioBase * 0.98;
+                    break;
+                case 4: 
+                    nuevoMonto = precioBase * 1.03;
+                    break;
+                case 5: 
+                    nuevoMonto = precioBase;
+                    break;
+                default:
+                    nuevoMonto = precioBase;
+                    break;
+            }
+
+            montoInput.value = nuevoMonto.toFixed(2);
+        }
+
+        metodoPagoSelect.addEventListener("change", actualizarMonto);
+
+        actualizarMonto();
+    </script>
+}

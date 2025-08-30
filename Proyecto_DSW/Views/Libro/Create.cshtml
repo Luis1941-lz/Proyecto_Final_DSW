@@ -1,0 +1,76 @@
+﻿@model Proyecto_DSW.Models.DTO.LibroCreateDto
+
+@{
+    ViewData["Title"] = "Crear Libro";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">📚 Crear Libro</h3>
+        </div>
+        <div class="card-body bg-white">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="titulo"></label>
+                    <input asp-for="titulo" class="form-control" />
+                    <span asp-validation-for="titulo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="autor"></label>
+                    <input asp-for="autor" class="form-control" />
+                    <span asp-validation-for="autor" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="precio"></label>
+                    <input asp-for="precio" class="form-control" />
+                    <span asp-validation-for="precio" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="stock"></label>
+                    <input asp-for="stock" class="form-control" />
+                    <span asp-validation-for="stock" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="descripcion"></label>
+                    <textarea asp-for="descripcion" class="form-control"></textarea>
+                    <span asp-validation-for="descripcion" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="tiene_pdf" class="form-check-input" />
+                    <label asp-for="tiene_pdf" class="form-check-label"></label>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Portada"></label>
+                    <input asp-for="Portada" type="file" class="form-control" />
+                    <span asp-validation-for="Portada" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Pdf"></label>
+                    <input asp-for="Pdf" type="file" class="form-control" />
+                    <span asp-validation-for="Pdf" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="id_categoria"></label>
+                    <select asp-for="id_categoria" class="form-select" asp-items="ViewBag.Categorias">
+                        <option value="">-- Seleccione Categoría --</option>
+                    </select>
+                    <span asp-validation-for="id_categoria" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Crear</button>
+            </form>
+
+        </div>
+    </div>
+</div>

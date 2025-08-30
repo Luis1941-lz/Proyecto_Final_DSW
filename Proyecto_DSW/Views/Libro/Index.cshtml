@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Proyecto_DSW.Models.Libro>
+
+@{
+    ViewData["Title"] = "Catálogo de Libros";
+
+
+    int? estadoUsuario = Context.Session.GetInt32("usuario_estado");
+    int? tipoUsuario = Context.Session.GetInt32("usuario_tipo");
+}
+
+@if (TempData["AccesoDenegado"] != null)
+{
+    <div class="alert alert-warning text-center">
+        <i class="bi bi-exclamation-triangle-fill"></i> @TempData["AccesoDenegado"]
+    </div>
+}
+
+<h1 class="mb-4 text-center">📚 Catálogo de Libros</h1>
+
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var libro in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <img src="@Url.Content(libro.imagen)" class="card-img-top" alt="@libro.titulo" style="height: 250px; object-fit: cover;">
+
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-primary">@libro.titulo</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@libro.autor</h6>
+                    <p class="card-text text-truncate">@libro.descripcion</p>
+                    <ul class="list-unstyled small mt-3">
+                        <li><strong>Precio:</strong> S/. @libro.precio.ToString("F2")</li>
+                        <li><strong>Stock:</strong> @libro.stock unidades</li>
+                        <li><strong>Categoría:</strong> @libro.Categoria?.nombre</li>
+                    </ul>
+                </div>
+
+                <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                    <a asp-action="Details" asp-route-id="@libro.id_libro" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-info-circle"></i> Detalles
+                    </a>
+
+                    @if (libro.tiene_pdf && !string.IsNullOrEmpty(libro.pdf_url))
+                    {
+
+                        if (estadoUsuario == 1 && (tipoUsuario == 1 || tipoUsuario == 3))
+                        {
+                            <a href="@Url.Content(libro.pdf_url)" target="_blank" class="btn btn-outline-success btn-sm">
+                                <i class="bi bi-file-earmark-pdf"></i> Ver PDF
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0)" onclick="mostrarAlerta()" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-file-earmark-pdf"></i> Ver PDF
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted small align-self-center">Sin PDF</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function mostrarAlerta() {
+            if (confirm("¿No estás suscrito? Mira nuestros planes aquí.")) {
+                window.location.href = '@Url.Action("Index", "Suscripciones")';
+            }
+        }
+    </script>
+}

@@ -1,0 +1,89 @@
+﻿@model Proyecto_DSW.Models.Libro
+
+@{
+    ViewData["Title"] = "Detalles del Libro";
+    var usuarioId = ViewBag.IdUsuario ?? 1; // ID pasado desde el controlador
+}
+
+<div class="container mt-5">
+    <h1 class="text-center text-primary">@Model.titulo</h1>
+
+    <div class="row">
+
+        <div class="col-md-7">
+            <div class="card shadow-sm border-light rounded">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">@Model.titulo</h3>
+                    <p class="card-text"><strong>Autor:</strong> @Model.autor</p>
+
+
+                    <div class="mb-4">
+                        <strong>Descripción:</strong>
+                        <p class="text-muted">@Model.descripcion</p>
+                    </div>
+
+                    <p class="card-text"><strong>Categoría:</strong> @Model.Categoria.nombre</p>
+
+
+                    <p class="text-success h4 mb-2"><strong>Precio: $@Model.precio</strong></p>
+
+        
+                    <div class="mb-3">
+                        <p class="text-muted mb-1"><strong>Stock: @Model.stock</strong></p>
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="Cantidad" class="form-label mb-0"><strong>Cantidad:</strong></label>
+                            <input type="number" id="Cantidad" name="Cantidad" class="form-control form-control-sm w-25" value="1" min="1" max="@Model.stock" />
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <strong>¿Te interesa?</strong>
+                        <p class="text-muted">Añade este libro a tu carrito ahora mismo.</p>
+
+                        <form asp-controller="Carrito" asp-action="Agregar" method="post">
+                            <input type="hidden" name="IdUsuario" value="@usuarioId" />
+                            <input type="hidden" name="IdLibro" value="@Model.id_libro" />
+                            <input type="hidden" name="Cantidad" value="1" id="hiddenCantidad" />
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-cart-plus"></i> Añadir al Carrito
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Imagen del Libro (Derecha) -->
+        <div class="col-md-5">
+            <div class="card shadow-sm border-light rounded">
+                <div class="card-body text-center">
+                    @if (!string.IsNullOrEmpty(Model.imagen))
+                    {
+                        <img src="@Model.imagen" alt="@Model.titulo" class="img-fluid rounded" style="max-height: 350px; object-fit: contain;" />
+                    }
+                    else
+                    {
+                        <p class="text-muted">No hay imagen disponible para este libro.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-secondary btn-lg">Volver al Listado</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        const cantidadInput = document.getElementById('Cantidad');
+        const hiddenInput = document.getElementById('hiddenCantidad');
+        cantidadInput.addEventListener('input', function () {
+            hiddenInput.value = cantidadInput.value;
+        });
+    </script>
+}

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Proyecto_DSW.Models.Venta>
+
+@{
+    ViewData["Title"] = "Mis Compras";
+}
+
+<h1 class="mb-4">Mis Compras</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No tienes compras registradas.</div>
+}
+else
+{
+    <div class="accordion" id="ventasAccordion">
+        @foreach (var item in Model)
+        {
+            var collapseId = "collapse" + item.id_venta;
+            <div class="accordion-item mb-3 shadow-sm">
+                <h2 class="accordion-header" id="heading@item.id_venta">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="false" aria-controls="@collapseId">
+                        <div class="d-flex justify-content-between w-100">
+                            <span><b>Cliente:</b> @item.Usuario?.nombre @item.Usuario?.apellido</span>
+                            <span><b>Método de Pago:</b> @item.MetodoPago?.nombre</span>
+                            <span><b>Fecha:</b> @item.fecha_venta.ToString("dd/MM/yyyy")</span>
+                        </div>
+                    </button>
+                </h2>
+                <div id="@collapseId" class="accordion-collapse collapse" aria-labelledby="heading@item.id_venta" data-bs-parent="#ventasAccordion">
+                    <div class="accordion-body">
+                        <h5>Libros comprados:</h5>
+                        <ul class="list-group mb-3">
+                            @foreach (var detalle in item.DetallesVenta ?? new List<Proyecto_DSW.Models.DetalleVenta>())
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @detalle.Libro?.titulo
+                                    <span class="badge bg-primary rounded-pill">Cantidad: @detalle.cantidad</span>
+                                </li>
+                            }
+                        </ul>
+
+                        
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

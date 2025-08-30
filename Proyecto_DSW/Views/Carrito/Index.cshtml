@@ -1,0 +1,63 @@
+﻿@using Proyecto_DSW.Models
+@model IEnumerable<Proyecto_DSW.Models.Carrito>
+
+@{
+    ViewData["Title"] = "Mi Carrito";
+    decimal total = 0;
+}
+
+<h2>🛒 Mi Carrito</h2>
+
+@if (!Model.Any())
+{
+    <p>Tu carrito está vacío.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var subtotal = item.Libro.precio * item.Cantidad;
+                total += subtotal;
+
+                <tr>
+                    <td>
+                        <img src="~/img/@item.Libro.imagen" alt="@item.Libro.titulo" style="width:80px; height:auto;" />
+                    </td>
+                    <td>@item.Libro.titulo</td>
+                    <td>@item.Libro.autor</td>
+                    <td>S/. @item.Libro.precio</td>
+                    <td>@item.Cantidad</td>
+                    <td>S/. @subtotal</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                <td><strong>S/. @total</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Vaciar carrito -->
+    <form asp-action="Vaciar" method="post">
+        <button type="submit" class="btn btn-danger">Vaciar carrito</button>
+    </form>
+
+    <!-- Botón para ir a Confirmar Compra -->
+    <a asp-action="ConfirmarCompra" asp-controller="Carrito" class="btn btn-success mt-2">
+        🛒 Realizar compra
+    </a>
+}

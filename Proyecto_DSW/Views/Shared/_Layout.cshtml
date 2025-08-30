@@ -1,49 +1,211 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Proyecto_DSW</title>
+    <title>@ViewData["Title"] - Biblioteca Premium</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Proyecto_DSW.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Proyecto_DSW</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-book"></i>
+            <h2>InKaBox</h2>
+            <button type="button" class="close-btn" id="close-sidebar">&times;</button>
+        </div>
+
+        <ul class="sidebar-links">
+            <li><a asp-controller="Home" asp-action="Index" class="active"><i class="fas fa-home"></i> Inicio</a></li>
+
+            @{
+                int? tipoUsuario = Context.Session.GetInt32("usuario_tipo");
+            }
+
+            @if (tipoUsuario == 1 || tipoUsuario == 2)
+            {
+                <li><a asp-controller="Libro" asp-action="Index"><i class="fas fa-book"></i> Libros</a></li>
+                <li><a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a></li>
+            }
+
+            @if (tipoUsuario == 2)
+            {
+                <li><a asp-controller="Suscripciones" asp-action="Index"><i class="fas fa-star"></i> Suscripción</a></li>
+                <li><a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a></li>
+            }
+
+            @if (tipoUsuario == 3)
+            {
+                <li class="mt-2">
+                    <a class="btn btn-warning w-100" data-bs-toggle="collapse" href="#panelControl" role="button" aria-expanded="false" aria-controls="panelControl">
+                        <i class="fas fa-cogs"></i> Panel de Control
+                    </a>
+                    <div class="collapse mt-1" id="panelControl">
+                        <ul class="list-unstyled ps-3">
+                            <li>
+                                <a asp-controller="Libro" asp-action="ListadoLibros" class="d-block py-1">
+                                    <i class="fas fa-book"></i> Gestión de Libros
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="Usuario" asp-action="Index" class="d-block py-1">
+                                    <i class="fas fa-users"></i> Gestión de Usuarios
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            }
+
+            @if (Context.Session.GetString("usuario_nombre") == null)
+            {
+                <li>
+                    <a class="btn btn-outline-primary w-100" asp-controller="Login" asp-action="Login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <form asp-controller="Login" asp-action="Logout" method="post" class="w-100">
+                        <button type="submit" class="btn btn-outline-danger w-100">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                        </button>
+                    </form>
+                </li>
+            }
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="cart-icon-container">
+                <a asp-controller="Carrito" asp-action="Index" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">
+                        @(Context.Session.GetInt32("carrito_cantidad") ?? 0)
+                    </span>
+                </a>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+            @if (Context.Session.GetString("usuario_nombre") != null)
+            {
+                <div class="ventas-icon-container">
+                    <a asp-controller="Venta" asp-action="MisCompras" class="ventas-link">
+                        <i class="fas fa-receipt"></i>
+                    </a>
+                </div>
+            }
+
+            @{
+                int usuarioId = Context.Session.GetInt32("usuario_id") ?? 0;
+                string usuarioNombre = Context.Session.GetString("usuario_nombre") ?? "";
+                string usuarioImagen = Context.Session.GetString("usuario_imagen");
+            }
+
+            <div class="user-info d-flex align-items-center gap-2">
+                @if (!string.IsNullOrEmpty(usuarioImagen))
+                {
+                    <a asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@usuarioId"
+                       style="text-decoration:none" class="d-flex align-items-center gap-2">
+                        <img src="@usuarioImagen"
+                             alt="Foto de usuario" class="user-image" />
+                        @if (tipoUsuario == 1)
+                        {
+                            <span class="premium-user">
+                                <i class="fas fa-crown crown-icon"></i> @usuarioNombre
+                            </span>
+                        }
+                        else
+                        {
+                            <span>@usuarioNombre</span>
+                        }
+                    </a>
+                }
+                else
+                {
+                    <i class="fas fa-user fa-lg"></i>
+                    @if (!string.IsNullOrEmpty(usuarioNombre))
+                    {
+                        <a asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@usuarioId" style="text-decoration:none">
+                            @if (tipoUsuario == 1)
+                            {
+                                <span class="premium-user">
+                                    <i class="fas fa-crown crown-icon"></i> @usuarioNombre
+                                </span>
+                            }
+                            else
+                            {
+                                <span>@usuarioNombre</span>
+                            }
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <button id="open-sidebar" class="open-sidebar-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="main-content">
+        <main role="main" class="container">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer id="contacto">
         <div class="container">
-            &copy; 2025 - Proyecto_DSW - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Biblioteca Premium</h3>
+                    <p>Tu destino para descubrir, comprar y disfrutar de libros de calidad. Ofrecemos tanto ediciones físicas como acceso digital a nuestra amplia colección.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Inicio</a></li>
+                        <li><a href="#libros">Libros</a></li>
+                        <li><a href="#suscripcion">Suscripción</a></li>
+                        <li><a href="#">Novedades</a></li>
+                        <li><a href="#">Autores</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorías</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Ficción</a></li>
+                        <li><a href="#">No Ficción</a></li>
+                        <li><a href="#">Ciencia</a></li>
+                        <li><a href="#">Tecnología</a></li>
+                        <li><a href="#">Autoayuda</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> San Borja 123, Lima</li>
+                        <li><i class="fas fa-phone"></i> +51 912 345 678</li>
+                        <li><i class="fas fa-envelope"></i> InKaBox@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright text-center mt-3">
+                <p>&copy; 2025 InKaBox. Todos los derechos reservados.</p>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

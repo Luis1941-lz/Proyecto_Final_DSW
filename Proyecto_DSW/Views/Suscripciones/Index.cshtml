@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Proyecto_DSW.Models.PlanSuscripciones>
+
+@{
+    ViewData["Title"] = "Planes de Suscripción";
+}
+
+<h1 class="text-center mb-4">Planes de Suscripción</h1>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body">
+                    <h5 class="card-title">@item.nombre</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Duración: @item.duracion_dias días</h6>
+                    <p class="card-text">
+                        <strong>Precio:</strong> S/. @item.precio
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 text-center">
+
+                    <form method="get" asp-action="FormularioPago" asp-controller="Pago">
+                        <input type="hidden" name="id_plan_suscripcion" value="@item.id_plan_suscripcion" />
+                        <input type="hidden" name="precio" value="@item.precio" />
+                        <button type="submit" class="btn btn-success">Comprar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
