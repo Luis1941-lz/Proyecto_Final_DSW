@@ -9,70 +9,89 @@
     decimal total = 0;
 }
 
-<h2>🛒 Confirmar Compra</h2>
+<link rel="stylesheet" href="~/css/ConfirmarCompra.css.css" />
 
-@if (!Model.Detalles.Any())
-{
-    <p>Tu carrito está vacío.</p>
-    <a asp-action="Index" asp-controller="Carrito" class="btn btn-primary mt-2">Volver al carrito</a>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Imagen</th>
-                <th>Título</th>
-                <th>Autor</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Detalles)
-            {
-                var subtotal = item.Libro.precio * item.Cantidad;
-                total += subtotal;
-                <tr>
-                    <td>
-                        <img src="~/img/@item.Libro.imagen" alt="@item.Libro.titulo" style="width:80px; height:auto;" />
-                    </td>
-                    <td>@item.Libro.titulo</td>
-                    <td>@item.Libro.autor</td>
-                    <td>S/. @item.Libro.precio</td>
-                    <td>@item.Cantidad</td>
-                    <td>S/. @subtotal</td>
-                </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5" class="text-end"><strong>Total:</strong></td>
-                <td><strong>S/. @total</strong></td>
-            </tr>
-        </tfoot>
-    </table>
+<div class="confirmar-container">
+    <div class="confirmar-header">
+        <h2>Confirmar Compra</h2>
+    </div>
 
-    <form asp-controller="Venta" asp-action="Crear" method="post">
-        <input type="hidden" name="idUsuario" value="@Model.IdUsuario" />
+    @if (!Model.Detalles.Any())
+    {
+        <div class="confirmar-vacio">
+            <p>Tu carrito está vacío.</p>
+            <a asp-action="Index" asp-controller="Carrito" class="btn-volver">Volver al carrito</a>
+        </div>
+    }
+    else
+    {
+        <div class="confirmar-table-container">
+            <table class="confirmar-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Detalles)
+                    {
+                        var subtotal = item.Libro.precio * item.Cantidad;
+                        total += subtotal;
+                        <tr>
+                            <td>
+                                <img src="~/img/@item.Libro.imagen" alt="@item.Libro.titulo" class="confirmar-img" />
+                            </td>
+                            <td>
+                                <div class="confirmar-title">@item.Libro.titulo</div>
+                                <div class="confirmar-author">@item.Libro.autor</div>
+                            </td>
+                            <td class="confirmar-price">S/. @item.Libro.precio</td>
+                            <td>
+                                <span class="confirmar-quantity">@item.Cantidad</span>
+                            </td>
+                            <td class="confirmar-subtotal">S/. @subtotal</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot class="confirmar-tfoot">
+                    <tr>
+                        <td colspan="4" class="confirmar-total-label">Total:</td>
+                        <td class="confirmar-total-value">S/. @total</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
-        <label for="IdMetodoPago" class="form-label">Método de Pago:</label>
-        <select name="idMetodoPago" id="IdMetodoPago" class="form-select mb-3">
-            <option value="">-- Selecciona un método de pago --</option>
-            @foreach (SelectListItem metodo in ViewBag.MetodosDePago)
-            {
-                <option value="@metodo.Value">@metodo.Text</option>
-            }
-        </select>
+        <div class="confirmar-form-container">
+            <h3 class="confirmar-form-title">Información de Pago</h3>
 
-        <input type="hidden"
-               name="detalles"
-               value='@JsonConvert.SerializeObject(
-                                                              Model.Detalles.Select(x => new DetalleVentaRequest { IdLibro = x.IdLibro, Cantidad = x.Cantidad })
-                                                          )' />
+            <form asp-controller="Venta" asp-action="Crear" method="post">
+                <input type="hidden" name="idUsuario" value="@Model.IdUsuario" />
 
-    <button type="submit" class="btn btn-success">Confirmar Compra</button>
-    <a asp-action="Index" asp-controller="Carrito" class="btn btn-secondary ms-2">Cancelar</a>
-</form>
-}
+                <label for="IdMetodoPago" class="form-label">Método de Pago:</label>
+                <select name="idMetodoPago" id="IdMetodoPago" class="form-select">
+                    <option value="">-- Selecciona un método de pago --</option>
+                    @foreach (SelectListItem metodo in ViewBag.MetodosDePago)
+                    {
+                        <option value="@metodo.Value">@metodo.Text</option>
+                    }
+                </select>
+
+                <input type="hidden"
+                       name="detalles"
+                       value='@JsonConvert.SerializeObject(
+                                                  Model.Detalles.Select(x => new DetalleVentaRequest { IdLibro = x.IdLibro, Cantidad = x.Cantidad })
+                                              )' />
+
+            <div class="confirmar-actions">
+                <button type="submit" class="btn-confirmar">Confirmar Compra</button>
+                <a asp-action="Index" asp-controller="Carrito" class="btn-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+        }
+</div>

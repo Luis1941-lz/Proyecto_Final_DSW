@@ -1,0 +1,95 @@
+﻿@model Proyecto_DSW.Models.DTO.LibroCreateDto
+
+
+@{
+    ViewData["Title"] = "Editar Libro";
+}
+
+<h1>Editar Libro</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- ID oculto -->
+            <input type="hidden" asp-for="id_libro" />
+
+            <div class="form-group mb-2">
+                <label asp-for="titulo" class="control-label"></label>
+                <input asp-for="titulo" class="form-control" />
+                <span asp-validation-for="titulo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="autor" class="control-label"></label>
+                <input asp-for="autor" class="form-control" />
+                <span asp-validation-for="autor" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="precio" class="control-label"></label>
+                <input asp-for="precio" class="form-control" />
+                <span asp-validation-for="precio" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="stock" class="control-label"></label>
+                <input asp-for="stock" class="form-control" />
+                <span asp-validation-for="stock" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="descripcion" class="control-label"></label>
+                <textarea asp-for="descripcion" class="form-control"></textarea>
+                <span asp-validation-for="descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check mb-2">
+                <input class="form-check-input" asp-for="tiene_pdf" />
+                <label class="form-check-label">@Html.DisplayNameFor(m => m.tiene_pdf)</label>
+            </div>
+
+            <!-- PDF existente -->
+            @if (!string.IsNullOrEmpty(Model.pdf_url))
+            {
+                <p>Archivo actual: <a href="@Model.pdf_url" target="_blank">Ver PDF</a></p>
+            }
+
+            <div class="form-group mb-2">
+                <label>Subir nuevo PDF (opcional)</label>
+                <input type="file" name="Pdf" class="form-control" />
+            </div>
+
+            <!-- Imagen existente -->
+            @if (!string.IsNullOrEmpty(Model.imagen))
+            {
+                <p>Imagen actual:</p>
+                <img src="@Model.imagen" alt="Portada" style="max-height:150px;" />
+            }
+
+            <div class="form-group mb-2">
+                <label>Subir nueva imagen (opcional)</label>
+                <input type="file" name="Portada" class="form-control" />
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="id_categoria" class="control-label"></label>
+                <select asp-for="id_categoria" asp-items="ViewBag.Categorias" class="form-control"></select>
+                <span asp-validation-for="id_categoria" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Guardar cambios" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

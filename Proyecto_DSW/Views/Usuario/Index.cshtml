@@ -7,7 +7,7 @@
 <h1 class="mb-4 text-center text-primary">👥 Panel de Administración - Usuarios</h1>
 
 <div class="d-flex justify-content-end mb-3">
-    <a asp-action="Create" class="btn btn-success">
+    <a asp-action="Crear" class="btn btn-success">
         <i class="bi bi-plus-circle"></i> Agregar Nuevo Usuario
     </a>
 </div>
@@ -38,10 +38,15 @@
                             <a asp-action="Editar" asp-route-id="@usuario.id_usuario" class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-pencil-square"></i> Editar
                             </a>
-                            <a asp-action="Details" asp-route-id="@usuario.id_usuario" class="btn btn-sm btn-outline-info">
-                                <i class="bi bi-info-circle"></i> Detalle
+                            <a asp-action="DetalleAdmin" asp-route-id="@usuario.id_usuario" class="btn btn-info">
+                                <i class="bi bi-eye"></i> Ver Detalle
                             </a>
-                            <form asp-action="Delete" asp-route-id="@usuario.id_usuario" method="post" class="d-inline" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
+
+                            <!-- ✅ Eliminar directo -->
+                            <form asp-action="Eliminar" method="post"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');"
+                                  style="display:inline;">
+                                <input type="hidden" name="id" value="@usuario.id_usuario" />
                                 <button type="submit" class="btn btn-sm btn-outline-danger">
                                     <i class="bi bi-trash"></i> Eliminar
                                 </button>

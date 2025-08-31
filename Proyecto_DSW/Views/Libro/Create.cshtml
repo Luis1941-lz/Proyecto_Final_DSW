@@ -4,73 +4,81 @@
     ViewData["Title"] = "Crear Libro";
 }
 
-<div class="container mt-4">
-    <div class="card shadow-sm border-0 rounded-3">
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">📚 Crear Libro</h3>
+<link rel="stylesheet" href="~/css/CrearLibro.css" />
+
+<div class="crear-libro-container">
+    <div class="crear-libro-card">
+        <div class="card-header-crear">
+            <h3>Crear Libro</h3>
         </div>
-        <div class="card-body bg-white">
-            <form asp-action="Create" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <div class="mb-3">
-                    <label asp-for="titulo"></label>
-                    <input asp-for="titulo" class="form-control" />
-                    <span asp-validation-for="titulo" class="text-danger"></span>
+        <div class="card-body-crear">
+            <form asp-action="Create" enctype="multipart/form-data" class="crear-libro-form">
+                <div asp-validation-summary="ModelOnly" class="validation-summary-crear"></div>
+
+                <div class="form-group-crear">
+                    <label asp-for="titulo" class="form-label-crear">Título</label>
+                    <input asp-for="titulo" class="form-control-crear" placeholder="Ingresa el título del libro" />
+                    <span asp-validation-for="titulo" class="text-danger-crear"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="autor"></label>
-                    <input asp-for="autor" class="form-control" />
-                    <span asp-validation-for="autor" class="text-danger"></span>
+                <div class="form-group-crear">
+                    <label asp-for="autor" class="form-label-crear">Autor</label>
+                    <input asp-for="autor" class="form-control-crear" placeholder="Nombre del autor" />
+                    <span asp-validation-for="autor" class="text-danger-crear"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="precio"></label>
-                    <input asp-for="precio" class="form-control" />
-                    <span asp-validation-for="precio" class="text-danger"></span>
+                <div class="form-group-crear">
+                    <label asp-for="precio" class="form-label-crear">Precio</label>
+                    <input asp-for="precio" class="form-control-crear" placeholder="0.00" />
+                    <span asp-validation-for="precio" class="text-danger-crear"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="stock"></label>
-                    <input asp-for="stock" class="form-control" />
-                    <span asp-validation-for="stock" class="text-danger"></span>
+                <div class="form-group-crear">
+                    <label asp-for="stock" class="form-label-crear">Stock</label>
+                    <input asp-for="stock" class="form-control-crear" placeholder="Cantidad disponible" />
+                    <span asp-validation-for="stock" class="text-danger-crear"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="descripcion"></label>
-                    <textarea asp-for="descripcion" class="form-control"></textarea>
-                    <span asp-validation-for="descripcion" class="text-danger"></span>
+                <div class="form-group-crear full-width">
+                    <label asp-for="descripcion" class="form-label-crear">Descripción</label>
+                    <textarea asp-for="descripcion" class="form-control-crear form-textarea-crear" placeholder="Describe el libro..."></textarea>
+                    <span asp-validation-for="descripcion" class="text-danger-crear"></span>
                 </div>
 
-                <div class="form-check mb-3">
-                    <input asp-for="tiene_pdf" class="form-check-input" />
-                    <label asp-for="tiene_pdf" class="form-check-label"></label>
+                <div class="form-group-crear full-width">
+                    <div class="form-check-crear">
+                        <input asp-for="tiene_pdf" class="form-check-input-crear" />
+                        <label asp-for="tiene_pdf" class="form-check-label-crear">¿Tiene PDF disponible?</label>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Portada"></label>
-                    <input asp-for="Portada" type="file" class="form-control" />
-                    <span asp-validation-for="Portada" class="text-danger"></span>
+                <div class="form-group-crear">
+                    <label asp-for="Portada" class="form-label-crear">Portada del Libro</label>
+                    <input asp-for="Portada" type="file" class="form-control-crear" />
+                    <span class="file-input-info">Formatos: JPG, PNG, GIF (Max 5MB)</span>
+                    <span asp-validation-for="Portada" class="text-danger-crear"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Pdf"></label>
-                    <input asp-for="Pdf" type="file" class="form-control" />
-                    <span asp-validation-for="Pdf" class="text-danger"></span>
+                <div class="form-group-crear">
+                    <label asp-for="Pdf" class="form-label-crear">Archivo PDF</label>
+                    <input asp-for="Pdf" type="file" class="form-control-crear" />
+                    <span class="file-input-info">Solo archivos PDF (Max 10MB)</span>
+                    <span asp-validation-for="Pdf" class="text-danger-crear"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="id_categoria"></label>
-                    <select asp-for="id_categoria" class="form-select" asp-items="ViewBag.Categorias">
+                <div class="form-group-crear">
+                    <label asp-for="id_categoria" class="form-label-crear">Categoría</label>
+                    <select asp-for="id_categoria" class="form-select-crear" asp-items="ViewBag.Categorias">
                         <option value="">-- Seleccione Categoría --</option>
                     </select>
-                    <span asp-validation-for="id_categoria" class="text-danger"></span>
+                    <span asp-validation-for="id_categoria" class="text-danger-crear"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Crear</button>
+                <div class="full-width">
+                    <button type="submit" class="btn-crear">Crear Libro</button>
+                </div>
             </form>
-
         </div>
     </div>
 </div>

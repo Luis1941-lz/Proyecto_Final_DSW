@@ -2,71 +2,127 @@
 
 @{
     ViewData["Title"] = "Panel de Administración - Libros";
+    var paginaActual = ViewBag.PaginaActual ?? 1;
+    var totalPaginas = ViewBag.TotalPaginas ?? 1;
 }
 
-<h1 class="mb-4 text-center text-primary">📚 Panel de Administración - Libros</h1>
+<link rel="stylesheet" href="~/css/AdminLibros.css" />
 
-<div class="d-flex justify-content-end mb-3">
-    <a asp-action="Create" class="btn btn-success">
-        <i class="bi bi-plus-circle"></i> Agregar Nuevo Libro
-    </a>
-</div>
+<div class="admin-libros-container">
+    <div class="admin-header">
+        <h1>📚 Panel de Administración - Libros</h1>
+    </div>
 
-<div class="table-responsive">
-    <table class="table table-striped table-hover table-bordered align-middle">
-        <thead class="table-dark text-center">
-            <tr>
-                <th>#</th>
-                <th>Imagen</th>
-                <th>Título</th>
-                <th>Autor</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Categoría</th>
-                <th>PDF</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var libro in Model)
-            {
+    <div class="filtro-container">
+        <form method="get" asp-action="ListadoLibros" id="filtroForm" class="filtro-form">
+            <div class="filtro-group">
+                <label class="filtro-label">Buscar</label>
+                <input type="text" name="busqueda" value="@ViewBag.BusquedaActual" 
+                       class="filtro-input" placeholder="Título o autor" id="busquedaInput" />
+            </div>
+            
+            <div class="filtro-group">
+                <label class="filtro-label">Categoría</label>
+                @Html.DropDownList("categoriaId", (SelectList)ViewBag.Categorias,
+                    "-- Todas las categorías --", new { @class = "filtro-select", 
+                    onchange = "document.getElementById('filtroForm').submit();" })
+            </div>
+        </form>
+    </div>
+
+    <div class="acciones-header">
+        <a asp-action="Create" class="btn-agregar">Agregar Nuevo Libro</a>
+    </div>
+
+    <div class="tabla-container">
+        <table class="admin-table">
+            <thead>
                 <tr>
-                    <td class="text-center">@libro.id_libro</td>
-                    <td class="text-center">
-                        @if (!string.IsNullOrEmpty(libro.imagen))
-                        {
-                            <img src="@Url.Content(libro.imagen)" alt="@libro.titulo" class="img-fluid" style="max-height: 60px; object-fit: cover;">
-                        }
-                        else
-                        {
-                            <span class="text-muted small">No disponible</span>
-                        }
-                    </td>
-                    <td class="text-truncate" style="max-width: 150px;">@libro.titulo</td>
-                    <td>@libro.autor</td>
-                    <td class="text-end">S/. @libro.precio.ToString("F2")</td>
-                    <td class="text-center">@libro.stock</td>
-                    <td>@libro.Categoria?.nombre</td>
-                    <td class="text-center">
-                        @(libro.tiene_pdf && !string.IsNullOrEmpty(libro.pdf_url) ? "Sí" : "No")
-                    </td>
-                    <td class="text-center">
-                        <div class="d-flex flex-column flex-md-row justify-content-center gap-1">
-                            <a asp-action="Edit" asp-route-id="@libro.id_libro" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-pencil-square"></i> Editar
-                            </a>
-                            <a asp-action="Details" asp-route-id="@libro.id_libro" class="btn btn-sm btn-outline-info">
-                                <i class="bi bi-info-circle"></i> Detalle
-                            </a>
-                            <form asp-action="Delete" asp-route-id="@libro.id_libro" method="post" class="d-inline" onsubmit="return confirm('¿Seguro que deseas eliminar este libro?');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </button>
-                            </form>
-                        </div>
-                    </td>
+                    <th>#</th>
+                    <th>Imagen</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Categoría</th>
+                    <th>PDF</th>
+                    <th>Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var libro in Model)
+                {
+                    <tr>
+                        <td class="text-center">@libro.id_libro</td>
+                        <td class="text-center">
+                            @if (!string.IsNullOrEmpty(libro.imagen))
+                            {
+                                <img src="@Url.Content(libro.imagen)" alt="@libro.titulo" class="libro-imagen" />
+                            }
+                            else
+                            {
+                                <span class="text-muted small">No disponible</span>
+                            }
+                        </td>
+                        <td class="text-truncate">@libro.titulo</td>
+                        <td>@libro.autor</td>
+                        <td class="text-end">S/. @libro.precio.ToString("F2")</td>
+                        <td class="text-center">@libro.stock</td>
+                        <td>@libro.Categoria?.nombre</td>
+                        <td class="text-center">
+                            <span class="@(libro.tiene_pdf && !string.IsNullOrEmpty(libro.pdf_url) ? "badge-si" : "badge-no")">
+                                @(libro.tiene_pdf && !string.IsNullOrEmpty(libro.pdf_url) ? "Sí" : "No")
+                            </span>
+                        </td>
+                        <td class="acciones-cell">
+                            <div class="acciones-group">
+                                <a asp-action="Edit" asp-route-id="@libro.id_libro" class="btn-accion btn-editar">
+                                    Editar
+                                </a>
+                                <a asp-action="Detalle" asp-route-id="@libro.id_libro" class="btn-accion btn-detalle">
+                                    Detalle
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@libro.id_libro" method="post" 
+                                      onsubmit="return confirm('¿Seguro que deseas eliminar este libro?');">
+                                    <button type="submit" class="btn-accion btn-eliminar">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (totalPaginas > 1)
+    {
+        <div class="paginacion-container">
+            <ul class="pagination">
+                @for (int i = 1; i <= totalPaginas; i++)
+                {
+                    <li class="page-item @(i == paginaActual ? "active" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("ListadoLibros", new {
+                                pagina = i,
+                                busqueda = ViewBag.BusquedaActual,
+                                categoriaId = ViewBag.CategoriaSeleccionada
+                           })">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('busquedaInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('filtroForm').submit();
+            }
+        });
+    </script>
+}

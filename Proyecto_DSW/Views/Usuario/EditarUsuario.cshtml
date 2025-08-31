@@ -4,165 +4,108 @@
     ViewData["Title"] = "Editar Perfil";
 }
 
-<h1>Editar Perfil</h1>
+<link rel="stylesheet" href="~/css/EditarPerfil.css" />
 
-<div class="text-center mb-4" id="contenedor-imagen">
-    @if (!string.IsNullOrEmpty(Model.imagen))
-    {
-    <div id="imagen-actual-container">
-        <div class="image-container">
-            <img src="@Url.Content(Model.imagen)" alt="Imagen de perfil"
-                 class="rounded-circle profile-image"
-                 style="width: 120px; height: 120px; object-fit: cover;" />
-            <div class="delete-overlay">
-                <span class="delete-text">Eliminar</span>
-            </div>
+<div class="editar-perfil-container">
+    <div class="editar-header">
+        <h1>Editar Perfil</h1>
+    </div>
+
+    <div class="perfil-form-container">
+        <!-- Sección de Imagen -->
+        <div class="perfil-imagen-section" id="contenedor-imagen">
+            @if (!string.IsNullOrEmpty(Model.imagen))
+            {
+                <div class="imagen-container" id="imagen-actual-container">
+                    <img src="@Url.Content(Model.imagen)" alt="Imagen de perfil" class="profile-image" />
+                    <div class="delete-overlay">
+                        <span class="delete-text">Eliminar</span>
+                    </div>
+                </div>
+                <div class="imagen-info">Haz clic en la imagen para eliminarla</div>
+            }
+            else
+            {
+                <div class="imagen-placeholder" id="sin-imagen-container">
+                    Sin Imagen
+                </div>
+            }
         </div>
 
-        <div class="mt-2">
-            <h5>Imagen Actual:</h5>
-            <img src="@Url.Content(Model.imagen)" style="max-width:150px;" />
-        </div>
-    </div>
-    }
-    else
-    {
-    <div id="sin-imagen-container" class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
-         style="width: 120px; height: 120px;">
-        Sin Imagen
-    </div>
-    }
-</div>
-
-<div class="row">
-    <div class="col-md-6 offset-md-3">
+        <!-- Formulario -->
         <form asp-action="EditarUsuario" asp-controller="Usuario" asp-route-id="@Model.id_usuario" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
 
             <input asp-for="id_usuario" type="hidden" />
             <input asp-for="id_tipo_usuario" type="hidden" />
             <input asp-for="id_estado" type="hidden" />
-
-
             <input type="hidden" id="quitarImagen" name="quitarImagen" value="false" />
 
-            <div class="form-group">
-                <label asp-for="nombre" class="control-label">Nombre</label>
-                <input asp-for="nombre" class="form-control" />
-                <span asp-validation-for="nombre" class="text-danger"></span>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="nombre" class="form-label">Nombre</label>
+                    <input asp-for="nombre" class="form-control" />
+                    <span asp-validation-for="nombre" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="apellido" class="form-label">Apellido</label>
+                    <input asp-for="apellido" class="form-control" />
+                    <span asp-validation-for="apellido" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="correo" class="form-label">Correo</label>
+                    <input asp-for="correo" class="form-control" />
+                    <span asp-validation-for="correo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="contrasena" class="form-label">Contraseña</label>
+                    <input asp-for="contrasena" type="text" class="form-control" />
+                    <span asp-validation-for="contrasena" class="text-danger"></span>
+                </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="apellido" class="control-label">Apellido</label>
-                <input asp-for="apellido" class="form-control" />
-                <span asp-validation-for="apellido" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="correo" class="control-label">Correo</label>
-                <input asp-for="correo" class="form-control" />
-                <span asp-validation-for="correo" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="contrasena" class="control-label">Contraseña</label>
-                <input asp-for="contrasena" type="text" class="form-control" />
-                <span asp-validation-for="contrasena" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="imagen" class="control-label">Imagen de Perfil</label>
+                <label class="form-label">Imagen de Perfil</label>
                 <input name="nuevaImagen" type="file" class="form-control" />
+                <div class="file-input-info">Selecciona una nueva imagen de perfil (opcional)</div>
             </div>
 
-            <div class="form-group mt-3">
-                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Guardar Cambios</button>
+                <a asp-action="Index" class="btn-secondary">Cancelar</a>
             </div>
         </form>
+
+        <div class="volver-link">
+            <a asp-controller="Home" asp-action="Index">Volver al inicio</a>
+        </div>
     </div>
 </div>
 
-<div class="mt-3 text-center">
-    <a asp-controller="Home" asp-action="Index">Volver al listado</a>
-</div>
-
-
 @section Scripts {
-<script>
-    const imageContainer = document.querySelector('.image-container');
-    if (imageContainer) {
-        // Hover
-        imageContainer.addEventListener('mouseover', function () {
-            document.querySelector('.delete-overlay').style.opacity = '1';
-            document.querySelector('.profile-image').style.opacity = '0.7';
-            imageContainer.classList.add('hover-circle');
-        });
+    <script>
+        const imageContainer = document.querySelector('.imagen-container');
+        if (imageContainer) {
+            imageContainer.addEventListener('click', function (e) {
+                if (e.target.closest('.delete-overlay')) {
+                    if (confirm("¿Estás seguro de que deseas quitar tu imagen de perfil?")) {
+                        document.getElementById('quitarImagen').value = 'true';
 
-        imageContainer.addEventListener('mouseout', function () {
-            document.querySelector('.delete-overlay').style.opacity = '0';
-            document.querySelector('.profile-image').style.opacity = '1';
-            imageContainer.classList.remove('hover-circle');
-        });
+                        // Crear nuevo placeholder
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'imagen-placeholder';
+                        placeholder.id = 'sin-imagen-container';
+                        placeholder.textContent = 'Sin Imagen';
 
-
-        document.querySelector('.delete-overlay').addEventListener('click', function () {
-            if (confirm("¿Estás seguro de que deseas quitar tu imagen de perfil?")) {
-                document.getElementById('quitarImagen').value = 'true';
-
-
-                document.getElementById('imagen-actual-container').style.display = "none";
-
-
-                document.getElementById('contenedor-imagen').innerHTML = `
-                    <div id="sin-imagen-container"
-                         class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
-                         style="width: 120px; height: 120px;">
-                        Sin Imagen
-                    </div>`;
-            }
-        });
-    }
-</script>
-
-<style>
-    .image-container {
-        position: relative;
-        display: inline-block;
-        border-radius: 50%;
-        transition: all 0.3s ease;
-    }
-
-    .profile-image {
-        transition: opacity 0.3s ease;
-        border-radius: 50%;
-    }
-
-    .delete-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        cursor: pointer;
-        border-radius: 50%;
-    }
-
-    .delete-text {
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .image-container.hover-circle {
-        border: 5px solid white;
-    }
-</style>
+                        // Reemplazar contenedor de imagen
+                        document.getElementById('contenedor-imagen').innerHTML = '';
+                        document.getElementById('contenedor-imagen').appendChild(placeholder);
+                    }
+                }
+            });
+        }
+    </script>
 }

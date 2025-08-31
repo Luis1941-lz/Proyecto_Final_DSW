@@ -131,6 +131,17 @@ namespace Proyecto_DSW.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> DetalleAdmin(int id)
+        {
+            var usuario = await ObtenerUsuarioPorIdAsync(id);
+            if (usuario == null)
+                return NotFound();
+
+            return View(usuario); // Vista: DetalleAdmin.cshtml
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {
             var usuario = await ObtenerUsuarioPorIdAsync(id);
@@ -180,7 +191,8 @@ namespace Proyecto_DSW.Controllers
 
             if (!ModelState.IsValid)
             {
-                var errores = ModelState.SelectMany(kvp => kvp.Value.Errors.Select(error => new {
+                var errores = ModelState.SelectMany(kvp => kvp.Value.Errors.Select(error => new
+                {
                     Campo = kvp.Key,
                     Error = error.ErrorMessage
                 })).ToList();
@@ -345,27 +357,63 @@ namespace Proyecto_DSW.Controllers
 
 
 
-        [HttpGet]
+
+        [HttpPost]
         public async Task<IActionResult> Eliminar(int id)
-        {
-            var usuario = await ObtenerUsuarioPorIdAsync(id);
-            if (usuario == null)
-                return NotFound();
-
-            return View(usuario);
-        }
-
-        [HttpPost, ActionName("Eliminar")]
-        public async Task<IActionResult> ConfirmarEliminar(int id)
         {
             using var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(_config["Services:URL_API"]);
 
             var response = await httpClient.DeleteAsync($"Usuario/{id}");
             if (!response.IsSuccessStatusCode)
-                return NotFound();
+            {
+                // ❌ Si falla → redirige sin TempData
+                return RedirectToAction(nameof(Index));
+            }
 
+            // ✅ Eliminado correctamente → redirige sin mensajes
             return RedirectToAction(nameof(Index));
         }
+
+
+
+        [HttpGet]
+        public IActionResult Registro()
+        {
+            return View(); // Muestra el formulario de registro
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Registro(Usuario usuario)
+        {
+            // ⚡ Valores por defecto
+            usuario.id_tipo_usuario = 2; // Usuario normal
+            usuario.id_estado = 1;       // Activo
+
+            if (!ModelState.IsValid)
+            {
+                return View(usuario);
+            }
+
+            using var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_config["Services:URL_API"]);
+
+            var json = JsonConvert.SerializeObject(usuario);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PostAsync("Usuario", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError("", "❌ No se pudo registrar el usuario.");
+                return View(usuario);
+            }
+
+            // ✅ Si el registro fue exitoso → redirige a Login
+            return RedirectToAction("Login", "Login");
+            // 👆 Cambia "Auth" por el controlador donde está tu Login
+        }
+
+
     }
 }

@@ -1,0 +1,69 @@
+﻿@model Proyecto_DSW.Models.Usuario
+
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<h1>Crear Usuario</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Crear">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-2">
+                <label asp-for="nombre" class="control-label"></label>
+                <input asp-for="nombre" class="form-control" />
+                <span asp-validation-for="nombre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="apellido" class="control-label"></label>
+                <input asp-for="apellido" class="form-control" />
+                <span asp-validation-for="apellido" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="correo" class="control-label"></label>
+                <input asp-for="correo" class="form-control" />
+                <span asp-validation-for="correo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="contrasena" class="control-label"></label>
+                <input asp-for="contrasena" type="password" class="form-control" />
+                <span asp-validation-for="contrasena" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="imagen" class="control-label"></label>
+                <input asp-for="imagen" class="form-control" />
+                <span asp-validation-for="imagen" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="id_tipo_usuario" class="control-label"></label>
+                <select asp-for="id_tipo_usuario" asp-items="ViewBag.Tipos" class="form-control"></select>
+                <span asp-validation-for="id_tipo_usuario" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="id_estado" class="control-label"></label>
+                <select asp-for="id_estado" asp-items="ViewBag.Estados" class="form-control"></select>
+                <span asp-validation-for="id_estado" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

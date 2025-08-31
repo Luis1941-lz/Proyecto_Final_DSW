@@ -4,29 +4,55 @@
     ViewData["Title"] = "Planes de Suscripción";
 }
 
-<h1 class="text-center mb-4">Planes de Suscripción</h1>
+<link rel="stylesheet" href="~/css/Suscripciones.css" />
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-primary">
-                <div class="card-body">
-                    <h5 class="card-title">@item.nombre</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Duración: @item.duracion_dias días</h6>
-                    <p class="card-text">
-                        <strong>Precio:</strong> S/. @item.precio
-                    </p>
+<div class="suscripciones-container">
+    <div class="suscripciones-header">
+        <h1>Planes de Suscripción</h1>
+        <p class="suscripciones-subtitle">Elige el plan que mejor se adapte a tus necesidades y disfruta de acceso ilimitado a nuestro contenido premium</p>
+    </div>
+
+    <div class="suscripciones-grid">
+        @foreach (var item in Model)
+        {
+            <div class="plan-card @(item.precio < 50 ? "popular" : "")">
+                @if (item.precio < 50)
+                {
+                    <span class="plan-badge">Popular</span>
+                }
+
+                <div class="plan-header">
+                    <h3 class="plan-title">@item.nombre</h3>
+                    <div class="plan-subtitle">Duración: @item.duracion_dias días</div>
+                    <div class="plan-price">
+                        <span class="currency">S/.</span>@item.precio
+                        <span class="period">/plan</span>
+                    </div>
                 </div>
-                <div class="card-footer bg-transparent border-top-0 text-center">
 
+                <div class="plan-body">
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Acceso a todos los libros</li>
+                        <li><i class="fas fa-check"></i> Descargas ilimitadas</li>
+                        <li><i class="fas fa-check"></i> Contenido exclusivo</li>
+                        <li><i class="fas fa-check"></i> Soporte prioritario</li>
+                        <li><i class="fas fa-check"></i> Sin anuncios</li>
+                    </ul>
+                </div>
+
+                <div class="plan-footer">
                     <form method="get" asp-action="FormularioPago" asp-controller="Pago">
                         <input type="hidden" name="id_plan_suscripcion" value="@item.id_plan_suscripcion" />
                         <input type="hidden" name="precio" value="@item.precio" />
-                        <button type="submit" class="btn btn-success">Comprar</button>
+                        <button type="submit" class="btn-subscribe">
+                            <i class="fas fa-shopping-cart"></i> Suscribirse ahora
+                        </button>
                     </form>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
+
+<!-- Agrega Font Awesome para los iconos -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

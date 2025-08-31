@@ -26,13 +26,13 @@
             @if (tipoUsuario == 1 || tipoUsuario == 2)
             {
                 <li><a asp-controller="Libro" asp-action="Index"><i class="fas fa-book"></i> Libros</a></li>
-                <li><a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a></li>
+
             }
 
             @if (tipoUsuario == 2)
             {
                 <li><a asp-controller="Suscripciones" asp-action="Index"><i class="fas fa-star"></i> Suscripción</a></li>
-                <li><a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a></li>
+
             }
 
             @if (tipoUsuario == 3)

@@ -1,0 +1,365 @@
+﻿/* ~/wwwroot/css/Suscripciones.css */
+
+:root {
+    --primary: #2c3e50;
+    --secondary: #e74c3c;
+    --accent: #3498db;
+    --success: #27ae60;
+    --light: #f8f9fa;
+    --dark: #1a252f;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --radius: 8px;
+    --radius-lg: 12px;
+}
+
+.suscripciones-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.suscripciones-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+}
+
+    .suscripciones-header h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+        .suscripciones-header h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
+        }
+
+.suscripciones-subtitle {
+    font-size: 1.2rem;
+    color: #6c757d;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.suscripciones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.plan-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--shadow-md);
+    border: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+    .plan-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .plan-card.popular {
+        border: 2px solid var(--accent);
+        transform: scale(1.02);
+    }
+
+        .plan-card.popular:before {
+            content: 'MÁS POPULAR';
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+            z-index: 2;
+        }
+
+.plan-header {
+    background: linear-gradient(135deg, var(--primary), #34495e);
+    color: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+    .plan-header:after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        background: var(--primary);
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+.plan-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.plan-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+}
+
+.plan-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 1rem 0;
+}
+
+    .plan-price .currency {
+        font-size: 1.2rem;
+        vertical-align: super;
+        margin-right: 2px;
+    }
+
+    .plan-price .period {
+        font-size: 1rem;
+        font-weight: 400;
+        opacity: 0.8;
+    }
+
+.plan-body {
+    padding: 2rem 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    flex-grow: 1;
+}
+
+    .plan-features li {
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #f1f3f4;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features li i {
+            color: var(--success);
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+.plan-footer {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    text-align: center;
+    border-top: 1px solid #e9ecef;
+}
+
+.btn-subscribe {
+    background: linear-gradient(45deg, var(--success), #2ecc71);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+    .btn-subscribe:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, var(--primary), #34495e);
+        opacity: 0;
+        transition: var(--transition);
+        z-index: -1;
+    }
+
+    .btn-subscribe:hover:before {
+        opacity: 1;
+    }
+
+    .btn-subscribe:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+    }
+
+/* Badge para planes destacados */
+.plan-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--secondary);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+/* Efectos de hover adicionales */
+.plan-card:hover .plan-header {
+    background: linear-gradient(135deg, var(--accent), #5dade2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .suscripciones-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .suscripciones-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .suscripciones-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 0.5rem;
+    }
+
+    .plan-card.popular {
+        transform: none;
+    }
+
+        .plan-card.popular:before {
+            right: -25px;
+            font-size: 0.7rem;
+            padding: 4px 25px;
+        }
+
+    .plan-header {
+        padding: 1.5rem 1rem;
+    }
+
+    .plan-title {
+        font-size: 1.4rem;
+    }
+
+    .plan-price {
+        font-size: 2rem;
+    }
+
+    .plan-body {
+        padding: 1.5rem 1rem;
+    }
+
+    .plan-features li {
+        padding: 0.6rem 0;
+    }
+
+    .btn-subscribe {
+        padding: 0.9rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .suscripciones-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .plan-card {
+        margin: 0 0.5rem;
+    }
+
+        .plan-card.popular:before {
+            right: -20px;
+            padding: 3px 20px;
+            font-size: 0.6rem;
+        }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.plan-card {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+    .plan-card:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .plan-card:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .plan-card:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .plan-card:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+/* Iconos para características */
+.feature-icon {
+    width: 20px;
+    height: 20px;
+    background: var(--success);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    margin-right: 0.8rem;
+}

@@ -1,11 +1,17 @@
 ﻿@model IEnumerable<Proyecto_DSW.Models.Libro>
 
+
+    <link rel="stylesheet" href="~/css/Libro.css" />
+
 @{
     ViewData["Title"] = "Catálogo de Libros";
-
-
     int? estadoUsuario = Context.Session.GetInt32("usuario_estado");
     int? tipoUsuario = Context.Session.GetInt32("usuario_tipo");
+
+    int paginaActual = ViewBag.PaginaActual ?? 1;
+    int totalPaginas = ViewBag.TotalPaginas ?? 1;
+    string busquedaActual = ViewBag.BusquedaActual ?? "";
+    int? categoriaSeleccionada = ViewBag.CategoriaSeleccionada;
 }
 
 @if (TempData["AccesoDenegado"] != null)
@@ -15,9 +21,28 @@
     </div>
 }
 
+
 <h1 class="mb-4 text-center">📚 Catálogo de Libros</h1>
 
-
+<form method="get" asp-action="Index" id="filtroForm">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <input type="text" name="busqueda" class="form-control"
+                   placeholder="Buscar por título o autor"
+                   value="@busquedaActual"
+                   oninput="document.getElementById('filtroForm').submit();" />
+        </div>
+        <div class="col-md-6">
+            @Html.DropDownList("categoriaId",
+                (SelectList)ViewBag.Categorias,
+                "-- Todas las categorías --",
+                new {
+                    @class = "form-select",
+                    onchange = "document.getElementById('filtroForm').submit();"
+                })
+        </div>
+    </div>
+</form>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var libro in Model)
@@ -25,7 +50,6 @@
         <div class="col">
             <div class="card h-100 shadow-sm border-0">
                 <img src="@Url.Content(libro.imagen)" class="card-img-top" alt="@libro.titulo" style="height: 250px; object-fit: cover;">
-
                 <div class="card-body">
                     <h5 class="card-title fw-bold text-primary">@libro.titulo</h5>
                     <h6 class="card-subtitle mb-2 text-muted">@libro.autor</h6>
@@ -36,15 +60,12 @@
                         <li><strong>Categoría:</strong> @libro.Categoria?.nombre</li>
                     </ul>
                 </div>
-
                 <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
                     <a asp-action="Details" asp-route-id="@libro.id_libro" class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-info-circle"></i> Detalles
                     </a>
-
                     @if (libro.tiene_pdf && !string.IsNullOrEmpty(libro.pdf_url))
                     {
-
                         if (estadoUsuario == 1 && (tipoUsuario == 1 || tipoUsuario == 3))
                         {
                             <a href="@Url.Content(libro.pdf_url)" target="_blank" class="btn btn-outline-success btn-sm">
@@ -67,6 +88,25 @@
         </div>
     }
 </div>
+
+@if (totalPaginas > 1)
+{
+    <nav aria-label="Paginación" class="mt-4">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= totalPaginas; i++)
+            {
+                <li class="page-item @(i == paginaActual ? "active" : "")">
+                    <a class="page-link"
+                       href="@Url.Action("Index", new {
+                            pagina = i,
+                            busqueda = busquedaActual,
+                            categoriaId = categoriaSeleccionada
+                       })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
 
 @section Scripts {
     <script>

@@ -6,58 +6,76 @@
     decimal total = 0;
 }
 
-<h2>🛒 Mi Carrito</h2>
+<link rel="stylesheet" href="~/css/Carrito.css" />
 
-@if (!Model.Any())
-{
-    <p>Tu carrito está vacío.</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Imagen</th>
-                <th>Título</th>
-                <th>Autor</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                var subtotal = item.Libro.precio * item.Cantidad;
-                total += subtotal;
+<div class="carrito-container">
+    <div class="carrito-header">
+        <h2>Mi Carrito</h2>
+    </div>
 
-                <tr>
-                    <td>
-                        <img src="~/img/@item.Libro.imagen" alt="@item.Libro.titulo" style="width:80px; height:auto;" />
-                    </td>
-                    <td>@item.Libro.titulo</td>
-                    <td>@item.Libro.autor</td>
-                    <td>S/. @item.Libro.precio</td>
-                    <td>@item.Cantidad</td>
-                    <td>S/. @subtotal</td>
-                </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5" class="text-end"><strong>Total:</strong></td>
-                <td><strong>S/. @total</strong></td>
-            </tr>
-        </tfoot>
-    </table>
+    @if (!Model.Any())
+    {
+        <div class="carrito-vacio">
+            <p>Tu carrito está vacío.</p>
+            <a href="@Url.Action("Index", "Libro")" class="btn-explorar">
+                Explorar Libros
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="carrito-table-container">
+            <table class="carrito-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var subtotal = item.Libro.precio * item.Cantidad;
+                        total += subtotal;
 
-    <!-- Vaciar carrito -->
-    <form asp-action="Vaciar" method="post">
-        <button type="submit" class="btn btn-danger">Vaciar carrito</button>
-    </form>
+                        <tr>
+                            <td>
+                                <img src="~/img/@item.Libro.imagen" alt="@item.Libro.titulo" class="carrito-img" />
+                            </td>
+                            <td>
+                                <div class="carrito-title">@item.Libro.titulo</div>
+                                <div class="carrito-author">@item.Libro.autor</div>
+                            </td>
+                            <td class="carrito-price">S/. @item.Libro.precio</td>
+                            <td>
+                                <span class="carrito-quantity">@item.Cantidad</span>
+                            </td>
+                            <td class="carrito-subtotal">S/. @subtotal</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot class="carrito-tfoot">
+                    <tr>
+                        <td colspan="4" class="carrito-total-label">Total:</td>
+                        <td class="carrito-total-value">S/. @total</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
-    <!-- Botón para ir a Confirmar Compra -->
-    <a asp-action="ConfirmarCompra" asp-controller="Carrito" class="btn btn-success mt-2">
-        🛒 Realizar compra
-    </a>
-}
+        <div class="carrito-actions">
+            <!-- Vaciar carrito -->
+            <form asp-action="Vaciar" method="post">
+                <button type="submit" class="btn-vaciar">Vaciar carrito</button>
+            </form>
+
+            <!-- Botón para ir a Confirmar Compra -->
+            <a asp-action="ConfirmarCompra" asp-controller="Carrito" class="btn-comprar">
+                Realizar compra
+            </a>
+        </div>
+    }
+</div>
