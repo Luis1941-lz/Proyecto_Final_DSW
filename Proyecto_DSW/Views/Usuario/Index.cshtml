@@ -3,18 +3,34 @@
 @{
     ViewData["Title"] = "Panel de Administración - Usuarios";
 }
+<link href="/css/AdminUsuario.css" rel="stylesheet" />
 
-<h1 class="mb-4 text-center text-primary">👥 Panel de Administración - Usuarios</h1>
-
-<div class="d-flex justify-content-end mb-3">
-    <a asp-action="Crear" class="btn btn-success">
-        <i class="bi bi-plus-circle"></i> Agregar Nuevo Usuario
-    </a>
+<div class="admin-header">
+    <h1 class="mb-4 text-center text-primary">👥 Panel de Administración - Usuarios</h1>
 </div>
 
-<div class="table-responsive">
-    <table class="table table-striped table-hover table-bordered align-middle">
-        <thead class="table-dark text-center">
+<div class="filtros-container mb-3 d-flex justify-content-between align-items-center">
+    <div>
+        <label for="filtroTipo" class="form-label me-2">Tipo de Usuario:</label>
+        <select id="filtroTipo" class="form-select d-inline-block w-auto">
+            <option value="">Todos</option>
+            @* Opciones de tipos de usuario, que debes pasar desde el controlador *@
+            @foreach (var tipo in ViewBag.Tipos as List<SelectListItem>)
+            {
+                <option value="@tipo.Value">@tipo.Text</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label for="busqueda" class="form-label me-2"></label>
+        <input id="busqueda" type="hidden" class="form-control d-inline-block w-auto" placeholder="Nombre, correo..." />
+    </div>
+</div>
+
+<div class="tabla-container">
+    <table id="tablaUsuarios" class="admin-table table-striped table-hover table-bordered align-middle">
+        <thead>
             <tr>
                 <th>#</th>
                 <th>Nombre</th>
@@ -27,29 +43,24 @@
         <tbody>
             @foreach (var usuario in Model)
             {
-                <tr>
+                <tr data-tipo="@usuario.id_tipo_usuario" data-nombre="@usuario.nombre @usuario.apellido" data-correo="@usuario.correo">
                     <td class="text-center">@usuario.id_usuario</td>
                     <td>@usuario.nombre @usuario.apellido</td>
                     <td>@usuario.correo</td>
                     <td class="text-center">@usuario.TipoUsuario?.nombre</td>
-                    <td class="text-center">@usuario.Estado?.nombre</td>
                     <td class="text-center">
-                        <div class="d-flex flex-column flex-md-row justify-content-center gap-1">
-                            <a asp-action="Editar" asp-route-id="@usuario.id_usuario" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-pencil-square"></i> Editar
-                            </a>
-                            <a asp-action="DetalleAdmin" asp-route-id="@usuario.id_usuario" class="btn btn-info">
-                                <i class="bi bi-eye"></i> Ver Detalle
-                            </a>
-
-                            <!-- ✅ Eliminar directo -->
-                            <form asp-action="Eliminar" method="post"
-                                  onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');"
-                                  style="display:inline;">
+                        @{
+                            var estadoClass = usuario.Estado?.nombre == "Activo" ? "badge-activo" : "badge-inactivo";
+                        }
+                        <span class="badge @estadoClass">@usuario.Estado?.nombre</span>
+                    </td>
+                    <td class="text-center acciones-cell">
+                        <div class="acciones-group">
+                            <a asp-action="Editar" asp-route-id="@usuario.id_usuario" class="btn-accion btn-editar">Editar</a>
+                            <a asp-action="DetalleAdmin" asp-route-id="@usuario.id_usuario" class="btn-accion btn-detalle">Ver Detalle</a>
+                            <form asp-action="Eliminar" method="post" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');" style="display:inline;">
                                 <input type="hidden" name="id" value="@usuario.id_usuario" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </button>
+                                <button type="submit" class="btn-accion btn-eliminar">Eliminar</button>
                             </form>
                         </div>
                     </td>
@@ -58,3 +69,92 @@
         </tbody>
     </table>
 </div>
+
+<div class="pagination-container mt-3 text-center">
+    <nav>
+        <ul id="paginacion" class="pagination justify-content-center"></ul>
+    </nav>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filtroTipo = document.getElementById('filtroTipo');
+            const busqueda = document.getElementById('busqueda');
+            const tabla = document.getElementById('tablaUsuarios').getElementsByTagName('tbody')[0];
+            const paginacion = document.getElementById('paginacion');
+            const filasPorPagina = 5;
+            let filas = Array.from(tabla.getElementsByTagName('tr'));
+            let paginaActual = 1;
+            let filasFiltradas = filas;
+
+            function filtrarYPaginar() {
+                const tipoSeleccionado = filtroTipo.value;
+                const textoBusqueda = busqueda.value.trim().toLowerCase();
+
+                filasFiltradas = filas.filter(fila => {
+                    const tipoFila = fila.getAttribute('data-tipo');
+                    const nombreFila = fila.getAttribute('data-nombre').toLowerCase();
+                    const correoFila = fila.getAttribute('data-correo').toLowerCase();
+
+                    const coincideTipo = !tipoSeleccionado || tipoFila === tipoSeleccionado;
+                    const coincideBusqueda = nombreFila.includes(textoBusqueda) || correoFila.includes(textoBusqueda);
+
+                    return coincideTipo && coincideBusqueda;
+                });
+
+                paginaActual = 1;
+                mostrarPagina(paginaActual);
+                crearPaginacion();
+            }
+
+            function mostrarPagina(pagina) {
+                const inicio = (pagina - 1) * filasPorPagina;
+                const fin = inicio + filasPorPagina;
+
+                filas.forEach(fila => fila.style.display = 'none');
+                filasFiltradas.slice(inicio, fin).forEach(fila => fila.style.display = '');
+
+                // Actualizar paginacion activa
+                Array.from(paginacion.children).forEach(li => {
+                    li.classList.remove('active');
+                    if (parseInt(li.dataset.pagina) === pagina) {
+                        li.classList.add('active');
+                    }
+                });
+            }
+
+            function crearPaginacion() {
+                paginacion.innerHTML = '';
+                const totalPaginas = Math.ceil(filasFiltradas.length / filasPorPagina);
+
+                for (let i = 1; i <= totalPaginas; i++) {
+                    const li = document.createElement('li');
+                    li.classList.add('page-item');
+                    if (i === paginaActual) li.classList.add('active');
+                    li.dataset.pagina = i;
+
+                    const a = document.createElement('a');
+                    a.classList.add('page-link');
+                    a.href = '#';
+                    a.textContent = i;
+
+                    a.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        paginaActual = i;
+                        mostrarPagina(paginaActual);
+                    });
+
+                    li.appendChild(a);
+                    paginacion.appendChild(li);
+                }
+            }
+
+            filtroTipo.addEventListener('change', filtrarYPaginar);
+            busqueda.addEventListener('input', filtrarYPaginar);
+
+            // Iniciar
+            filtrarYPaginar();
+        });
+    </script>
+}

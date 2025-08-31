@@ -73,13 +73,14 @@
                 <input type="hidden" name="idUsuario" value="@Model.IdUsuario" />
 
                 <label for="IdMetodoPago" class="form-label">Método de Pago:</label>
-                <select name="idMetodoPago" id="IdMetodoPago" class="form-select">
+                <select name="idMetodoPago" id="IdMetodoPago" class="form-select" required>
                     <option value="">-- Selecciona un método de pago --</option>
                     @foreach (SelectListItem metodo in ViewBag.MetodosDePago)
                     {
                         <option value="@metodo.Value">@metodo.Text</option>
                     }
                 </select>
+
 
                 <input type="hidden"
                        name="detalles"

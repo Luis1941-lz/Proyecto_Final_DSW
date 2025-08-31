@@ -4,116 +4,131 @@
     ViewData["Title"] = "Formulario de Pago";
 }
 
-<h1 class="text-center text-primary">Formulario de Pago</h1>
+<link rel="stylesheet" href="~/css/Pago.css" />
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <h4 class="text-primary">Detalles del Pago</h4>
-            <hr />
+<div class="pago-container">
+    <div class="pago-header">
+        <h1>Formulario de Pago</h1>
+    </div>
 
-            <form asp-action="RealizarPago" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div class="pago-card">
+        <h4 class="pago-subheader">Detalles del Pago</h4>
 
+        <form asp-action="RealizarPago" method="post" class="pago-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger-pago"></div>
 
-                <input asp-for="id_pago" type="hidden" />
-                <input asp-for="id_usuario" type="hidden" />
+            <input asp-for="id_pago" type="hidden" />
+            <input asp-for="id_usuario" type="hidden" />
+            <input asp-for="Suscripcion.id_plan" type="hidden" />
+            <input asp-for="Suscripcion.fecha_inicio" type="hidden" />
+            <input asp-for="Suscripcion.fecha_fin" type="hidden" />
+            <input asp-for="Suscripcion.estado" type="hidden" />
+            <input asp-for="Suscripcion.Plan.id_plan_suscripcion" type="hidden" />
+            <input asp-for="Suscripcion.Plan.precio" type="hidden" />
+            <input asp-for="Suscripcion.Plan.duracion_dias" type="hidden" />
 
+            <div class="form-group-pago">
+                <label class="form-label-pago">Usuario</label>
+                <input type="text" class="form-control-pago"
+                       value="@Context.Session.GetString("usuario_nombre")" readonly />
+            </div>
 
-                <input asp-for="Suscripcion.id_plan" type="hidden" />
-                <input asp-for="Suscripcion.fecha_inicio" type="hidden" />
-                <input asp-for="Suscripcion.fecha_fin" type="hidden" />
-                <input asp-for="Suscripcion.estado" type="hidden" />
-                <input asp-for="Suscripcion.Plan.id_plan_suscripcion" type="hidden" />
-                <input asp-for="Suscripcion.Plan.precio" type="hidden" />
-                <input asp-for="Suscripcion.Plan.duracion_dias" type="hidden" />
+            <div class="form-group-pago">
+                <label asp-for="id_metodo_pago" class="form-label-pago">Método de Pago</label>
+                <select asp-for="id_metodo_pago" class="select-pago" asp-items="ViewBag.MetodosDePago" id="metodoPagoSelect">
+                    <option value="">Seleccione un método de pago</option>
+                </select>
+                <span asp-validation-for="id_metodo_pago" class="text-danger-pago"></span>
+            </div>
 
-                <div class="form-group">
-                    <label class="control-label text-dark">Usuario</label>
-                    <input type="text" class="form-control"
-                           value="@Context.Session.GetString("usuario_nombre")" readonly />
-                </div>
+            <div class="monto-container">
+                <div class="monto-label">Monto a Pagar</div>
+                <div class="monto-valor" id="montoDisplay">S/. 0.00</div>
+                <input asp-for="monto" id="montoInput" type="hidden" />
+            </div>
 
+            <div class="form-group-pago">
+                <label asp-for="fecha_pago" class="form-label-pago">Fecha de Pago</label>
+                <input asp-for="fecha_pago" class="form-control-pago"
+                       value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" readonly />
+                <span asp-validation-for="fecha_pago" class="text-danger-pago"></span>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="id_metodo_pago" class="control-label text-dark">Método de Pago</label>
-                    <select asp-for="id_metodo_pago" class="form-control" asp-items="ViewBag.MetodosDePago" id="metodoPagoSelect">
-                        <option value="">Seleccione un método de pago</option>
-                    </select>
-                    <span asp-validation-for="id_metodo_pago" class="text-danger"></span>
-                </div>
+            <div class="estado-container">
+                <p class="estado-text">Estado: Pendiente</p>
+                <input asp-for="estado" type="hidden" value="Pendiente" />
+            </div>
 
+            <button type="submit" class="btn-pagar">Realizar Pago</button>
+        </form>
 
-                <div class="form-group">
-                    <label asp-for="monto" class="control-label text-dark">Monto a Pagar</label>
-                    <input asp-for="monto" id="montoInput" class="form-control" type="number" step="0.01" min="0" readonly />
-                    <span asp-validation-for="monto" class="text-danger"></span>
-                </div>
-
-
-                <div class="form-group">
-                    <label asp-for="fecha_pago" class="control-label text-dark">Fecha de Pago</label>
-                    <input asp-for="fecha_pago" class="form-control" type="text" readonly value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" />
-                    <span asp-validation-for="fecha_pago" class="text-danger"></span>
-                </div>
-
-
-                <div class="form-group" >
-                    <label asp-for="estado" class="control-label text-dark">Estado</label>
-                    <input asp-for="estado" class="form-control" readonly value="Pendiente" />
-                    <span asp-validation-for="estado" class="text-danger"></span>
-                </div>
-
-
-
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary btn-lg">Realizar Pago</button>
-                </div>
-            </form>
+        <div class="pago-footer">
+            <a asp-controller="Suscripciones" asp-action="Index" class="btn-volver">Volver a la Lista</a>
         </div>
     </div>
-</div>
-
-<div class="text-center mt-3">
-    <a asp-action="Index" class="btn btn-secondary">Volver a la Lista</a>
 </div>
 
 @section Scripts {
     <script>
         const precioBase = @ViewBag.Precio;
         const montoInput = document.getElementById("montoInput");
+        const montoDisplay = document.getElementById("montoDisplay");
         const metodoPagoSelect = document.getElementById("metodoPagoSelect");
+
+        // Nombres de métodos de pago para mostrar
+        const metodosPago = {
+            1: "Tarjeta Crédito (+5%)",
+            2: "PayPal",
+            3: "Transferencia (-2%)",
+            4: "Yape/Plin (+3%)",
+            5: "Efectivo"
+        };
 
         function actualizarMonto() {
             let metodo = parseInt(metodoPagoSelect.value);
             let nuevoMonto = precioBase;
+            let descripcion = "";
 
             switch (metodo) {
-                case 1: 
+                case 1:
                     nuevoMonto = precioBase * 1.05;
+                    descripcion = " (+5% comisión)";
                     break;
-                case 2: 
+                case 2:
                     nuevoMonto = precioBase;
+                    descripcion = "";
                     break;
-                case 3: 
+                case 3:
                     nuevoMonto = precioBase * 0.98;
+                    descripcion = " (-2% descuento)";
                     break;
-                case 4: 
+                case 4:
                     nuevoMonto = precioBase * 1.03;
+                    descripcion = " (+3% comisión)";
                     break;
-                case 5: 
+                case 5:
                     nuevoMonto = precioBase;
+                    descripcion = "";
                     break;
                 default:
                     nuevoMonto = precioBase;
+                    descripcion = "";
                     break;
             }
 
             montoInput.value = nuevoMonto.toFixed(2);
+            montoDisplay.textContent = `S/. ${nuevoMonto.toFixed(2)}${descripcion}`;
+
+            // Animación
+            montoDisplay.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                montoDisplay.style.transform = 'scale(1)';
+            }, 300);
         }
 
         metodoPagoSelect.addEventListener("change", actualizarMonto);
 
+        // Inicializar
         actualizarMonto();
     </script>
 }

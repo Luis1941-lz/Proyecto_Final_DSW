@@ -25,24 +25,20 @@
             <div class="form-group">
                 <label for="correo" class="form-label">Correo electrónico</label>
                 <input type="email" class="form-control" id="correo" name="correo" placeholder="tu@correo.com" required autofocus />
-                <div class="invalid-feedback">
-                    Por favor ingresa un correo válido.
-                </div>
+
             </div>
 
             <div class="form-group">
                 <label for="contrasena" class="form-label">Contraseña</label>
                 <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="********" required />
-                <div class="invalid-feedback">
-                    Por favor ingresa tu contraseña.
-                </div>
+
             </div>
 
             <button type="submit" class="btn-login" id="loginButton">Ingresar</button>
         </form>
 
         <div class="login-footer">
-            <small>¿No tienes cuenta? <a href="#" class="register-link">Regístrate aquí</a></small>
+            <small>¿No tienes cuenta? <a asp-action="Registro" asp-controller="Usuario"  class="register-link">Regístrate aquí</a></small>
         </div>
     </div>
 </div>

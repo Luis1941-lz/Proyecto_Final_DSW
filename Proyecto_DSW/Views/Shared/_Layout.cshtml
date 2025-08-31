@@ -26,30 +26,29 @@
             @if (tipoUsuario == 1 || tipoUsuario == 2)
             {
                 <li><a asp-controller="Libro" asp-action="Index"><i class="fas fa-book"></i> Libros</a></li>
-
             }
 
             @if (tipoUsuario == 2)
             {
                 <li><a asp-controller="Suscripciones" asp-action="Index"><i class="fas fa-star"></i> Suscripción</a></li>
-
             }
+
 
             @if (tipoUsuario == 3)
             {
-                <li class="mt-2">
-                    <a class="btn btn-warning w-100" data-bs-toggle="collapse" href="#panelControl" role="button" aria-expanded="false" aria-controls="panelControl">
+                <li>
+                    <a class="btn btn-warning w-100" data-bs-toggle="collapse" href="#panelControl" role="button">
                         <i class="fas fa-cogs"></i> Panel de Control
                     </a>
                     <div class="collapse mt-1" id="panelControl">
                         <ul class="list-unstyled ps-3">
                             <li>
-                                <a asp-controller="Libro" asp-action="ListadoLibros" class="d-block py-1">
+                                <a asp-controller="Libro" asp-action="ListadoLibros">
                                     <i class="fas fa-book"></i> Gestión de Libros
                                 </a>
                             </li>
                             <li>
-                                <a asp-controller="Usuario" asp-action="Index" class="d-block py-1">
+                                <a asp-controller="Usuario" asp-action="Index">
                                     <i class="fas fa-users"></i> Gestión de Usuarios
                                 </a>
                             </li>
@@ -57,6 +56,8 @@
                     </div>
                 </li>
             }
+
+            <li><a asp-controller="Home" asp-action="Contacto"><i class="fas fa-envelope"></i> Contacto</a></li>
 
             @if (Context.Session.GetString("usuario_nombre") == null)
             {
@@ -103,13 +104,12 @@
                 string usuarioImagen = Context.Session.GetString("usuario_imagen");
             }
 
-            <div class="user-info d-flex align-items-center gap-2">
+            <div class="user-info">
                 @if (!string.IsNullOrEmpty(usuarioImagen))
                 {
                     <a asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@usuarioId"
-                       style="text-decoration:none" class="d-flex align-items-center gap-2">
-                        <img src="@usuarioImagen"
-                             alt="Foto de usuario" class="user-image" />
+                       class="d-flex align-items-center gap-2 text-decoration-none">
+                        <img src="@usuarioImagen" alt="Foto de usuario" class="user-image" />
                         @if (tipoUsuario == 1)
                         {
                             <span class="premium-user">
@@ -118,28 +118,26 @@
                         }
                         else
                         {
-                            <span>@usuarioNombre</span>
+                            <span class="text-white">@usuarioNombre</span>
                         }
                     </a>
                 }
                 else
                 {
-                    <i class="fas fa-user fa-lg"></i>
-                    @if (!string.IsNullOrEmpty(usuarioNombre))
-                    {
-                        <a asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@usuarioId" style="text-decoration:none">
-                            @if (tipoUsuario == 1)
-                            {
-                                <span class="premium-user">
-                                    <i class="fas fa-crown crown-icon"></i> @usuarioNombre
-                                </span>
-                            }
-                            else
-                            {
-                                <span>@usuarioNombre</span>
-                            }
-                        </a>
-                    }
+                    <a asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@usuarioId"
+                       class="d-flex align-items-center gap-2 text-decoration-none">
+                        <i class="fas fa-user fa-lg text-white"></i>
+                        @if (tipoUsuario == 1)
+                        {
+                            <span class="premium-user">
+                                <i class="fas fa-crown crown-icon"></i> @usuarioNombre
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-white">@usuarioNombre</span>
+                        }
+                    </a>
                 }
             </div>
         </div>
@@ -171,21 +169,21 @@
                 <div class="footer-column">
                     <h3>Enlaces Rápidos</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Inicio</a></li>
-                        <li><a href="#libros">Libros</a></li>
-                        <li><a href="#suscripcion">Suscripción</a></li>
-                        <li><a href="#">Novedades</a></li>
-                        <li><a href="#">Autores</a></li>
+                        <li><a href="#"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li><a href="#libros"><i class="fas fa-book"></i> Libros</a></li>
+                        <li><a href="#suscripcion"><i class="fas fa-star"></i> Suscripción</a></li>
+                        <li><a href="#"><i class="fas fa-newspaper"></i> Novedades</a></li>
+                        <li><a href="#"><i class="fas fa-user-edit"></i> Autores</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Categorías</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Ficción</a></li>
-                        <li><a href="#">No Ficción</a></li>
-                        <li><a href="#">Ciencia</a></li>
-                        <li><a href="#">Tecnología</a></li>
-                        <li><a href="#">Autoayuda</a></li>
+                        <li><a href="#"><i class="fas fa-book-open"></i> Ficción</a></li>
+                        <li><a href="#"><i class="fas fa-glasses"></i> No Ficción</a></li>
+                        <li><a href="#"><i class="fas fa-flask"></i> Ciencia</a></li>
+                        <li><a href="#"><i class="fas fa-laptop"></i> Tecnología</a></li>
+                        <li><a href="#"><i class="fas fa-hands-helping"></i> Autoayuda</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -197,7 +195,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="copyright text-center mt-3">
+            <div class="copyright">
                 <p>&copy; 2025 InKaBox. Todos los derechos reservados.</p>
             </div>
         </div>

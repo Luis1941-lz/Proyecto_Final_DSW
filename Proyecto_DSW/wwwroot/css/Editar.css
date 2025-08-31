@@ -1,0 +1,269 @@
+﻿/* styles.css - Estilos elegantes para formularios de edición */
+
+/* Variables de colores y estilos */
+:root {
+    --primary-color: #4e73df;
+    --primary-dark: #2e59d9;
+    --secondary-color: #6f42c1;
+    --success-color: #1cc88a;
+    --info-color: #36b9cc;
+    --warning-color: #f6c23e;
+    --danger-color: #e74a3b;
+    --light-color: #f8f9fc;
+    --dark-color: #5a5c69;
+    --text-color: #858796;
+    --border-radius: 0.35rem;
+    --box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    --transition: all 0.3s ease;
+}
+
+/* Estilos generales */
+body {
+    background-color: #f8f9fc;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h1, h4 {
+    color: var(--dark-color);
+    font-weight: 700;
+}
+
+/* Contenedor principal */
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.col-md-4, .col-md-6 {
+    background: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Encabezados */
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+hr {
+    border-top: 1px solid #e3e6f0;
+    margin: 1.5rem 0;
+}
+
+/* Formularios */
+form {
+    padding: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+    .form-group label {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-color);
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d1d3e2;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+    .form-control:focus {
+        color: var(--text-color);
+        background-color: #fff;
+        border-color: var(--primary-color);
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    }
+
+    .form-control[readonly] {
+        background-color: #eaecf4;
+        opacity: 1;
+    }
+
+/* Select personalizado */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+/* Checkbox personalizado */
+.form-check {
+    padding-left: 1.75rem;
+}
+
+.form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+    margin-top: 0.15em;
+    margin-left: -1.75rem;
+    background-color: #fff;
+    border: 1px solid #b7b9cc;
+    border-radius: 0.25em;
+}
+
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .form-check-input:focus {
+        border-color: var(--primary-color);
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    }
+
+.form-check-label {
+    color: var(--text-color);
+    font-weight: 400;
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    border: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+    .btn-primary:hover {
+        color: #fff;
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1.5rem rgba(58, 59, 69, 0.2);
+    }
+
+.btn-secondary {
+    color: #fff;
+    background-color: var(--dark-color);
+    border-color: var(--dark-color);
+}
+
+    .btn-secondary:hover {
+        color: #fff;
+        background-color: #4a4c5a;
+        border-color: #4a4c5a;
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1.5rem rgba(58, 59, 69, 0.2);
+    }
+
+.mt-3 {
+    margin-top: 1.5rem !important;
+}
+
+/* Mensajes de validación */
+.text-danger {
+    color: var(--danger-color) !important;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Imágenes y archivos */
+img {
+    border-radius: var(--border-radius);
+    box-shadow: 0 0.15rem 0.5rem rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+    img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+    }
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+    a:hover {
+        color: var(--primary-dark);
+        text-decoration: underline;
+    }
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .col-md-4, .col-md-6 {
+        padding: 1.5rem;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .mt-3 .btn {
+        margin-right: 0.5rem;
+    }
+}
+
+/* Efectos de transición para elementos del formulario */
+.form-control, .btn, img {
+    transition: var(--transition);
+}
+
+/* Estilo para grupos de formulario con enfoque mejorado */
+.form-group:focus-within label {
+    color: var(--primary-color);
+}
+
+/* Animación sutil al cargar el formulario */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.col-md-4, .col-md-6 {
+    animation: fadeIn 0.5s ease-out;
+}

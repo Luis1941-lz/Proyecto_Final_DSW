@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Proyecto_DSW.Models.Libro>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
@@ -9,7 +11,6 @@
         <i class="bi bi-exclamation-triangle-fill"></i> @TempData["AccesoDenegado"]
     </div>
 }
-
 
 <main>
     <section class="hero">
@@ -29,59 +30,27 @@
         </div>
 
         <div class="books-grid">
-            <!-- === LIBRO 1 === -->
-            <div class="book-card">
-                <div class="book-img">
-                    <img src="" alt="Cien años de soledad">
-                    <div class="book-badge">Nuevo</div>
-                </div>
-                <div class="book-info">
-                    <h3>Cien años de soledad</h3>
-                    <br>
-                    <div class="author">Gabriel García Márquez</div>
-                    <div class="price">S/24.99</div>
-                    <div class="book-actions">
-                       
+            @foreach (var libro in Model)
+            {
+                <div class="book-card">
+                    <div class="book-img">
+                        <img src="@Url.Content(libro.imagen)" alt="@libro.titulo" />
+                        <div class="book-badge">Nuevo</div>
+                    </div>
+                    <div class="book-info">
+                        <h3>@libro.titulo</h3>
+                        <br />
+                        <div class="author">@libro.autor</div>
+                        <div class="price">S/. @libro.precio.ToString("F2")</div>
+                        <div class="book-actions">
+                            <a asp-controller="Libro" asp-action="Details" asp-route-id="@libro.id_libro" class="btn btn-sm btn-outline-primary">Ver más</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- === LIBRO 2 === -->
-            <div class="book-card">
-                <div class="book-img">
-                    <img src="" alt="Don Quijote de la Mancha">
-                    <div class="book-badge">Popular</div>
-                </div>
-                <div class="book-info">
-                    <h3>Don Quijote de la Mancha</h3>
-                    <div class="author">Miguel de Cervantes</div>
-                    <div class="price">S/21.50</div>
-                    <div class="book-actions">
-                       
-                    </div>
-                </div>
-            </div>
-
-            <!-- === LIBRO 3 === -->
-            <div class="book-card">
-                <div class="book-img">
-                    <img src="" alt="1984">
-                    <div class="book-badge">Oferta</div>
-                </div>
-                <div class="book-info">
-                    <h3>1984</h3>
-                    <br>
-                    <div class="author">George Orwell</div>
-                    <div class="price">S/18.75</div>
-                    <div class="book-actions">
-                       
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </section>
 
-    <!-- === SUSCRIPCIÓN === -->
     <section id="suscripcion" class="subscription">
         <div class="container">
             <h2>Suscripción Premium</h2>
@@ -107,9 +76,6 @@
             </div>
         </div>
     </section>
-
-    <!-- (modales de carrito, pago y suscripción los mantienes como ya los tienes) -->
-
 </main>
 
 @section Scripts {

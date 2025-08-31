@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "Contacto - InKaBox";
+    ViewData["Description"] = "Contáctanos para cualquier consulta sobre nuestros libros y servicios";
+    ViewData["Keywords"] = "contacto, librería, libros, soporte, ayuda";
+}
+
+<link rel="stylesheet" href="~/css/Contacto.css" />
+
+<div class="contacto-container">
+    <div class="contacto-header">
+        <h1>📞 Contáctanos</h1>
+        <p class="contacto-subtitle">Estamos aquí para ayudarte. Escríbenos y te responderemos a la brevedad.</p>
+    </div>
+
+    <div class="contacto-content">
+        <!-- Información de Contacto -->
+        <div class="contacto-info">
+            <h2>Información de Contacto</h2>
+
+            <div class="info-item">
+                <div class="info-icon">📍</div>
+                <div class="info-content">
+                    <h3>Dirección</h3>
+                    <p>Av. Librería 123, San Borja, Lima, Perú</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">📞</div>
+                <div class="info-content">
+                    <h3>Teléfono</h3>
+                    <p>
+                        <a href="tel:+51912345678" class="text-decoration-none text-dark">+51 912 345 678</a>
+                        <button class="btn btn-sm btn-outline-primary ms-2"
+                                onclick="copiarAlPortapapeles('+51912345678', this)"
+                                data-bs-toggle="tooltip" title="Copiar número">
+                            📋
+                        </button>
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">✉️</div>
+                <div class="info-content">
+                    <h3>Email</h3>
+                    <p>
+                        <a href="mailto:info@inkabox.com" class="text-decoration-none text-dark">info@inkabox.com</a>
+                        <button class="btn btn-sm btn-outline-primary ms-2"
+                                onclick="copiarAlPortapapeles('info@inkabox.com', this)"
+                                data-bs-toggle="tooltip" title="Copiar email">
+                            📋
+                        </button>
+                    </p>
+                </div>
+            </div>
+
+            <div class="horario">
+                <h3>🕒 Horario de Atención</h3>
+                <div class="horario-item">
+                    <span>Lunes - Viernes:</span>
+                    <span>9:00 AM - 7:00 PM</span>
+                </div>
+                <div class="horario-item">
+                    <span>Sábados:</span>
+                    <span>10:00 AM - 5:00 PM</span>
+                </div>
+                <div class="horario-item">
+                    <span>Domingos:</span>
+                    <span>Cerrado</span>
+                </div>
+            </div>
+
+            <div class="redes-sociales">
+                <a href="#" class="social-link" data-bs-toggle="tooltip" title="Facebook">📘</a>
+                <a href="#" class="social-link" data-bs-toggle="tooltip" title="Instagram">📸</a>
+                <a href="#" class="social-link" data-bs-toggle="tooltip" title="Twitter">🐦</a>
+                <a href="#" class="social-link" data-bs-toggle="tooltip" title="WhatsApp">💬</a>
+            </div>
+        </div>
+
+        <!-- Formulario de Contacto -->
+        <div class="contacto-form">
+            <h2>📝 Envíanos un Mensaje</h2>
+
+            <form id="contactoForm" novalidate>
+                <div class="form-group-contacto">
+                    <label for="nombre" class="form-label-contacto">Nombre Completo</label>
+                    <input type="text" class="form-control-contacto" id="nombre" name="nombre" required
+                           placeholder="Ingresa tu nombre completo">
+                    <div class="text-danger-contacto"></div>
+                </div>
+
+                <div class="form-group-contacto">
+                    <label for="email" class="form-label-contacto">Correo Electrónico</label>
+                    <input type="email" class="form-control-contacto" id="email" name="email" required
+                           placeholder="tu@correo.com">
+                    <div class="text-danger-contacto"></div>
+                </div>
+
+                <div class="form-group-contacto">
+                    <label for="telefono" class="form-label-contacto">Teléfono (Opcional)</label>
+                    <input type="tel" class="form-control-contacto" id="telefono" name="telefono"
+                           placeholder="+51 999 999 999">
+                </div>
+
+                <div class="form-group-contacto">
+                    <label for="asunto" class="form-label-contacto">Asunto</label>
+                    <select class="form-control-contacto" id="asunto" name="asunto" required>
+                        <option value="">Selecciona un asunto</option>
+                        <option value="consulta">Consulta General</option>
+                        <option value="soporte">Soporte Técnico</option>
+                        <option value="ventas">Información de Ventas</option>
+                        <option value="sugerencia">Sugerencia</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                    <div class="text-danger-contacto"></div>
+                </div>
+
+                <div class="form-group-contacto">
+                    <label for="mensaje" class="form-label-contacto">Mensaje</label>
+                    <textarea class="form-control-contacto" id="mensaje" name="mensaje" rows="5" required
+                              placeholder="Escribe tu mensaje aquí..."></textarea>
+                    <div class="text-danger-contacto"></div>
+                </div>
+
+                <button type="submit" class="btn-enviar" id="btnEnviar">
+                    📤 Enviar Mensaje
+                </button>
+            </form>
+
+            <!-- Alertas -->
+            <div id="alertSuccess" class="alert alert-success mt-3 d-none" role="alert">
+                ¡Mensaje enviado correctamente! Te contactaremos pronto.
+            </div>
+            <div id="alertError" class="alert alert-danger mt-3 d-none" role="alert">
+                Error al enviar el mensaje. Intenta nuevamente.
+            </div>
+        </div>
+    </div>
+
+    <!-- Mapa -->
+    <div class="mapa-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.573215229012!2d-76.9979099250198!3d-12.091366088146892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c7d8a7a7a7a7%3A0x1b2b3c4d5e6f7g8h!2sSan+Borja%2C+Lima!5e0!3m2!1ses!2spe!4v1620000000000!5m2!1ses!2spe"
+                allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/contacto.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+}

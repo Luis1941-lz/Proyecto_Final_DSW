@@ -1,0 +1,233 @@
+﻿/* DetalleAdmin.css - Estilos elegantes para vista de detalles */
+
+/* Variables de colores y estilos */
+:root {
+    --primary-color: #4e73df;
+    --primary-dark: #2e59d9;
+    --secondary-color: #6f42c1;
+    --success-color: #1cc88a;
+    --info-color: #36b9cc;
+    --warning-color: #f6c23e;
+    --danger-color: #e74a3b;
+    --light-color: #f8f9fc;
+    --dark-color: #5a5c69;
+    --text-color: #858796;
+    --border-radius: 0.35rem;
+    --box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    --transition: all 0.3s ease;
+}
+
+/* Estilos generales */
+body {
+    background-color: #f8f9fc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+h1, h4 {
+    color: var(--dark-color);
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+hr {
+    border-top: 1px solid #e3e6f0;
+    margin: 1.5rem 0;
+}
+
+/* Contenedor principal */
+.row {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Lista de definición */
+dl {
+    background: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 700px;
+}
+
+.row {
+    margin: 0;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: var(--transition);
+}
+
+    .row:hover {
+        background-color: #f8f9fe;
+    }
+
+    .row:last-child {
+        border-bottom: none;
+    }
+
+dt {
+    font-weight: 700;
+    color: var(--dark-color);
+    padding-right: 15px;
+}
+
+dd {
+    margin: 0;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+dt.col-sm-2 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    text-align: right;
+    padding-right: 25px;
+}
+
+dd.col-sm-10 {
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+/* Botones */
+div:last-child {
+    text-align: center;
+    margin-top: 25px;
+}
+
+a {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+    a:first-child {
+        color: #fff;
+        background-color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+    }
+
+        a:first-child:hover {
+            color: #fff;
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1.5rem rgba(58, 59, 69, 0.2);
+            text-decoration: none;
+        }
+
+    a:last-child {
+        color: #fff;
+        background-color: var(--dark-color);
+        border: 1px solid var(--dark-color);
+    }
+
+        a:last-child:hover {
+            color: #fff;
+            background-color: #4a4c5a;
+            border-color: #4a4c5a;
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1.5rem rgba(58, 59, 69, 0.2);
+            text-decoration: none;
+        }
+
+/* Badges para datos (opcional) */
+dd.col-sm-10 {
+    padding: 0.35rem 0.75rem;
+    background-color: #f8f9fe;
+    border-radius: 0.25rem;
+    display: inline-block;
+}
+
+/* Animación sutil al cargar la página */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+dl {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    dl {
+        padding: 1.5rem;
+    }
+
+    dt.col-sm-2 {
+        flex: 0 0 35%;
+        max-width: 35%;
+        text-align: left;
+        padding-right: 15px;
+        margin-bottom: 5px;
+    }
+
+    dd.col-sm-10 {
+        flex: 0 0 65%;
+        max-width: 65%;
+    }
+
+    .row {
+        flex-direction: column;
+        padding: 10px 0;
+    }
+
+    a {
+        width: 100%;
+        margin-bottom: 0.5rem;
+        margin-right: 0;
+    }
+}
+
+/* Mejora visual para campos específicos */
+dt.col-sm-2::after {
+    content: ":";
+}
+
+/* Estilo para el ID de usuario (destacado) */
+.row:first-child dd {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* Efecto de transición para filas */
+.row {
+    transition: var(--transition);
+}

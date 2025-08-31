@@ -43,7 +43,7 @@
 
                         <tr>
                             <td>
-                                <img src="~/img/@item.Libro.imagen" alt="@item.Libro.titulo" class="carrito-img" />
+                                <img src="@Url.Content(@item.Libro.imagen)" class="card-img-top" alt="@item.Libro.titulo" style="height: 250px; object-fit: cover;">
                             </td>
                             <td>
                                 <div class="carrito-title">@item.Libro.titulo</div>

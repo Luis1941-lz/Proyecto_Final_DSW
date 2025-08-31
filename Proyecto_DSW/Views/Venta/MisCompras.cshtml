@@ -4,45 +4,97 @@
     ViewData["Title"] = "Mis Compras";
 }
 
-<h1 class="mb-4">Mis Compras</h1>
+<link rel="stylesheet" href="~/css/MisCompras.css" />
 
-@if (!Model.Any())
-{
-    <div class="alert alert-info">No tienes compras registradas.</div>
-}
-else
-{
-    <div class="accordion" id="ventasAccordion">
-        @foreach (var item in Model)
+<div class="mis-compras-container">
+    <div class="mis-compras-header">
+        <h1>Mis Compras</h1>
+    </div>
+
+    <div class="compras-content">
+        @if (!Model.Any())
         {
-            var collapseId = "collapse" + item.id_venta;
-            <div class="accordion-item mb-3 shadow-sm">
-                <h2 class="accordion-header" id="heading@item.id_venta">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="false" aria-controls="@collapseId">
-                        <div class="d-flex justify-content-between w-100">
-                            <span><b>Cliente:</b> @item.Usuario?.nombre @item.Usuario?.apellido</span>
-                            <span><b>Método de Pago:</b> @item.MetodoPago?.nombre</span>
-                            <span><b>Fecha:</b> @item.fecha_venta.ToString("dd/MM/yyyy")</span>
-                        </div>
-                    </button>
-                </h2>
-                <div id="@collapseId" class="accordion-collapse collapse" aria-labelledby="heading@item.id_venta" data-bs-parent="#ventasAccordion">
-                    <div class="accordion-body">
-                        <h5>Libros comprados:</h5>
-                        <ul class="list-group mb-3">
-                            @foreach (var detalle in item.DetallesVenta ?? new List<Proyecto_DSW.Models.DetalleVenta>())
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    @detalle.Libro?.titulo
-                                    <span class="badge bg-primary rounded-pill">Cantidad: @detalle.cantidad</span>
-                                </li>
-                            }
-                        </ul>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> No tienes compras registradas.
+            </div>
+        }
+        else
+        {
+            <div class="ventas-accordion" id="ventasAccordion">
+                @foreach (var item in Model)
+                {
+                    var collapseId = "collapse" + item.id_venta;
+                    var subtotal = item.DetallesVenta?.Sum(d => d.Libro?.precio * d.cantidad) ?? 0;
+                    var impuestos = subtotal * 0.18m; // 18% de impuestos
+                    var total = subtotal + impuestos;
 
-                        
+                    <div class="accordion-item-custom">
+                        <h2 class="accordion-header-custom" id="heading@(item.id_venta)">
+                            <button class="accordion-button-custom collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="false" aria-controls="@collapseId">
+                                <div class="venta-info">
+                                    <div class="venta-info-item">
+                                        <span class="venta-info-label">Compra #</span>
+                                        <span class="venta-info-value">@item.id_venta</span>
+                                    </div>
+                                    <div class="venta-info-item">
+                                        <span class="venta-info-label">Fecha</span>
+                                        <span class="venta-info-value">@item.fecha_venta.ToString("dd/MM/yyyy")</span>
+                                    </div>
+                                    <div class="venta-info-item">
+                                        <span class="venta-info-label">Método de Pago</span>
+                                        <span class="venta-info-value">@item.MetodoPago?.nombre</span>
+                                    </div>
+                                    <div class="venta-info-item">
+                                        <span class="venta-info-label">Total</span>
+                                        <span class="venta-info-value">S/. @total.ToString("F2")</span>
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="@collapseId" class="accordion-collapse-custom collapse" aria-labelledby="heading@(item.id_venta)" data-bs-parent="#ventasAccordion">
+                            <div class="accordion-body-custom">
+                                <h5 class="libros-title">Libros comprados</h5>
+
+                                <div class="libros-list">
+                                    @foreach (var detalle in item.DetallesVenta ?? new List<Proyecto_DSW.Models.DetalleVenta>())
+                                    {
+                                        <div class="libro-item">
+                                            <span class="libro-titulo">@detalle.Libro?.titulo</span>
+                                            <span class="libro-cantidad">Cantidad: @detalle.cantidad</span>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="venta-totals">
+                                    <div class="total-grid">
+                                        <div class="total-item">
+                                            <span class="total-label">Subtotal</span>
+                                            <span class="total-value subtotal">S/. @subtotal.ToString("F2")</span>
+                                        </div>
+                                        <div class="total-item">
+                                            <span class="total-label">Impuestos (18%)</span>
+                                            <span class="total-value impuestos">S/. @impuestos.ToString("F2")</span>
+                                        </div>
+                                        <div class="total-item">
+                                            <span class="total-label">Total</span>
+                                            <span class="total-value">S/. @total.ToString("F2")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         }
     </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Inicializar tooltips de Bootstrap si es necesario
+        $(document).ready(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
 }

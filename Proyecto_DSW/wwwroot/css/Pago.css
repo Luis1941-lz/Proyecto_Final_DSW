@@ -1,0 +1,377 @@
+﻿/* ~/wwwroot/css/Pago.css */
+
+:root {
+    --primary: #2c3e50;
+    --secondary: #e74c3c;
+    --accent: #3498db;
+    --success: #27ae60;
+    --warning: #f39c12;
+    --light: #f8f9fa;
+    --dark: #1a252f;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --radius: 8px;
+    --radius-lg: 12px;
+}
+
+.pago-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.pago-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+}
+
+    .pago-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 1rem;
+    }
+
+        .pago-header h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
+        }
+
+.pago-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 2.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+    transition: var(--transition);
+}
+
+    .pago-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+.pago-subheader {
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid #f1f3f4;
+    font-weight: 600;
+}
+
+.pago-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group-pago {
+    margin-bottom: 1.5rem;
+}
+
+.form-label-pago {
+    display: block;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    .form-label-pago:before {
+        font-size: 1.1rem;
+    }
+
+.form-control-pago {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border: 2px solid #e1e5eb;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: #f8f9fa;
+}
+
+    .form-control-pago:focus {
+        border-color: var(--accent);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        background-color: white;
+        transform: translateY(-2px);
+    }
+
+    .form-control-pago[readonly] {
+        background-color: #e9ecef;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+        .form-control-pago[readonly]:focus {
+            transform: none;
+            box-shadow: none;
+            border-color: #e1e5eb;
+        }
+
+.select-pago {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border: 2px solid #e1e5eb;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: #f8f9fa;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    appearance: none;
+}
+
+    .select-pago:focus {
+        border-color: var(--accent);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        background-color: white;
+        transform: translateY(-2px);
+    }
+
+.text-danger-pago {
+    color: var(--secondary);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: block;
+    font-weight: 500;
+}
+
+.monto-container {
+    background: linear-gradient(135deg, var(--success), #2ecc71);
+    color: white;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.monto-label {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+.monto-valor {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.estado-container {
+    background: linear-gradient(135deg, var(--warning), #e67e22);
+    color: white;
+    padding: 1rem;
+    border-radius: var(--radius);
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.estado-text {
+    font-weight: 600;
+    margin: 0;
+}
+
+.btn-pagar {
+    background: linear-gradient(135deg, var(--success), #2ecc71);
+    color: white;
+    border: none;
+    padding: 1.2rem 2.5rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+    .btn-pagar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--primary), #34495e);
+        opacity: 0;
+        transition: var(--transition);
+        z-index: -1;
+    }
+
+    .btn-pagar:hover::before {
+        opacity: 1;
+    }
+
+    .btn-pagar:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+    }
+
+.btn-volver {
+    background: linear-gradient(135deg, #6c757d, #adb5bd);
+    color: white;
+    padding: 0.9rem 2rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+    .btn-volver:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+        color: white;
+    }
+
+.pago-footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e1e5eb;
+}
+
+/* Iconos para etiquetas */
+.form-label-pago[for="id_metodo_pago"]:before {
+    content: '💳';
+}
+
+.form-label-pago[for="monto"]:before {
+    content: '💰';
+}
+
+.form-label-pago[for="fecha_pago"]:before {
+    content: '📅';
+}
+
+.form-label-pago[for="estado"]:before {
+    content: '📊';
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pago-card {
+    animation: fadeInUp 0.6s ease;
+}
+
+/* Efectos de los métodos de pago */
+.metodo-option {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.5rem 0;
+}
+
+.metodo-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .pago-container {
+        padding: 1rem;
+    }
+
+    .pago-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .pago-header h1 {
+        font-size: 2rem;
+    }
+
+    .monto-valor {
+        font-size: 1.8rem;
+    }
+
+    .btn-pagar {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pago-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .pago-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .form-control-pago,
+    .select-pago {
+        padding: 0.9rem 1rem;
+    }
+
+    .monto-valor {
+        font-size: 1.6rem;
+    }
+}
+
+/* Validación visual */
+.was-validated .select-pago:invalid,
+.was-validated .form-control-pago:invalid {
+    border-color: var(--secondary);
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+    .was-validated .select-pago:invalid:focus,
+    .was-validated .form-control-pago:invalid:focus {
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+    }
+
+/* Iconos para botones */
+.btn-pagar:before {
+    content: '💳';
+}
+
+.btn-volver:before {
+    content: '←';
+}

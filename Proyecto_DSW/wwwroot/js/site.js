@@ -1,43 +1,72 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+﻿// ~/wwwroot/js/sidebar.js - VERSIÓN SOLO PC
+
+document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById("sidebar");
     const openBtn = document.getElementById("open-sidebar");
     const closeBtn = document.getElementById("close-sidebar");
     const cartCount = document.querySelector(".cart-count");
 
-    console.log("sidebar:", sidebar);
-    console.log("openBtn:", openBtn);
-    console.log("closeBtn:", closeBtn);
+    // Estado inicial: sidebar visible
+    let isSidebarOpen = true;
 
+    console.log("Elementos cargados:", { sidebar, openBtn, closeBtn, cartCount });
+
+    // Función para abrir sidebar
+    function openSidebar() {
+        sidebar.classList.remove("collapsed");
+        if (openBtn) openBtn.classList.add("hidden");
+        isSidebarOpen = true;
+    }
+
+    // Función para cerrar sidebar
+    function closeSidebar() {
+        sidebar.classList.add("collapsed");
+        if (openBtn) openBtn.classList.remove("hidden");
+        isSidebarOpen = false;
+    }
+
+    // Event listeners
     if (openBtn) {
-        openBtn.addEventListener("click", function () {
-            sidebar.classList.add("active");
-            openBtn.classList.add("hidden");
-        });
+        openBtn.addEventListener("click", openSidebar);
     }
 
     if (closeBtn) {
-        closeBtn.addEventListener("click", function () {
-            sidebar.classList.remove("active");
-            openBtn.classList.remove("hidden");
-        });
+        closeBtn.addEventListener("click", closeSidebar);
     }
 
-    const sidebarLinks = document.querySelectorAll(".sidebar-links a");
-    sidebarLinks.forEach(link => {
-        link.addEventListener("click", function (e) {
-            sidebarLinks.forEach(l => l.classList.remove("active"));
-            this.classList.add("active");
-        });
-    });
-
+    // Actualizar carrito
     function actualizarCarrito() {
         fetch("/Carrito/ObtenerCantidad")
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error('Error en la respuesta');
+                return res.json();
+            })
             .then(data => {
-                cartCount.textContent = data;
+                if (cartCount) {
+                    cartCount.textContent = data;
+                    // Animación cuando cambia el contador
+                    if (data > 0) {
+                        cartCount.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            cartCount.style.transform = 'scale(1)';
+                        }, 300);
+                    }
+                }
             })
             .catch(err => console.error("Error al cargar carrito:", err));
     }
 
+    // Inicializar
     actualizarCarrito();
+
+    // Opcional: Actualizar carrito cada 30 segundos
+    setInterval(actualizarCarrito, 30000);
+
+    // Exportar funciones para uso global
+    window.sidebarManager = {
+        open: openSidebar,
+        close: closeSidebar,
+        isOpen: () => isSidebarOpen,
+        updateCart: actualizarCarrito
+    };
 });

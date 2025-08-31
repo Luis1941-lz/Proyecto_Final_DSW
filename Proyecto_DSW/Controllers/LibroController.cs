@@ -59,6 +59,10 @@ namespace Proyecto_DSW.Controllers
             using var http = new HttpClient();
             http.BaseAddress = new Uri(_config["Services:URL_API"]);
 
+            // ✅ Mostrar el contenido del objeto que se enviará al API
+            Console.WriteLine("📦 Enviando libro al API:");
+            Console.WriteLine(JsonConvert.SerializeObject(libro, Formatting.Indented));
+
             var contenido = new StringContent(
                 JsonConvert.SerializeObject(libro),
                 System.Text.Encoding.UTF8,
@@ -68,11 +72,17 @@ namespace Proyecto_DSW.Controllers
             var mensaje = http.PutAsync($"Libro/{id}", contenido).Result;
 
             if (!mensaje.IsSuccessStatusCode)
+            {
+                var errorResponse = mensaje.Content.ReadAsStringAsync().Result;
+                Console.WriteLine("❌ Respuesta de error del API:");
+                Console.WriteLine(errorResponse);
                 throw new Exception($"Error API: {mensaje.StatusCode}");
+            }
 
             var data = mensaje.Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<Libro>(data);
         }
+
 
         private bool eliminarLibro(int id)
         {
@@ -345,9 +355,16 @@ namespace Proyecto_DSW.Controllers
 
                 if (!ModelState.IsValid)
                 {
+                    // 🔎 Mostrar errores del ModelState en consola
+                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        Console.WriteLine("⚠️ Model error: " + error.ErrorMessage);
+                    }
+
                     ViewBag.Categorias = new SelectList(obtenerCategorias(), "id_categoria", "nombre", dto.id_categoria);
                     return View(dto);
                 }
+
 
                 // 🔎 Asegurar que el id coincida con la URL
                 if (dto.id_libro != id)
@@ -420,7 +437,7 @@ namespace Proyecto_DSW.Controllers
                 // 📌 Mapear al modelo Libro final
                 var libro = new Libro
                 {
-                    id_libro = id,   // ⚡ fuerza el ID correcto
+                    id_libro = id,
                     titulo = dto.titulo,
                     autor = dto.autor,
                     precio = dto.precio,
@@ -429,14 +446,22 @@ namespace Proyecto_DSW.Controllers
                     tiene_pdf = dto.tiene_pdf,
                     pdf_url = string.IsNullOrEmpty(dto.pdf_url) ? null : dto.pdf_url,
                     imagen = string.IsNullOrEmpty(dto.imagen) ? null : dto.imagen,
-                    id_categoria = dto.id_categoria
+                    id_categoria = dto.id_categoria,
+
+                    // ✅ Agrega esta propiedad
+                    Categoria = new CategoriaLibro
+                    {
+                        id_categoria = dto.id_categoria,
+                        nombre = dto.nombre_categoria ?? ""
+                    }
                 };
+
 
 
                 // 🔄 Llamar API para actualizar
                 var actualizado = actualizarLibro(id, libro);
 
-                return RedirectToAction("Details", new { id = actualizado.id_libro });
+                return RedirectToAction("ListadoLibros");
             }
             catch (Exception ex)
             {

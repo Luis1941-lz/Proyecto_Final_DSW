@@ -70,11 +70,32 @@ namespace Proyecto_DSW.Controllers
         }
 
         [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var listado = await ObtenerListadoAsync();
+            var tipos = new List<SelectListItem>();
+
+            try
+            {
+                var tiposUsuario = await ObtenerTiposAsync();
+                tipos = tiposUsuario.Select(t => new SelectListItem
+                {
+                    Value = t.id_tipo_usuario.ToString(),
+                    Text = t.nombre
+                }).ToList();
+            }
+            catch
+            {
+                // En caso de error, lista vacía
+                tipos = new List<SelectListItem>();
+            }
+
+            ViewBag.Tipos = tipos;
+
             return View(listado);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Detalles(int id)
